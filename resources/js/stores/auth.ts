@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useEnv, useStorage } from "@helpers";
 import { ref } from "vue";
+import { usePush } from "@routers";
 
 const userStore = useStorage(useEnv("user_store"));
 const tokenStore = useStorage(useEnv("token_store"));
@@ -33,5 +34,13 @@ export const useAuthStore = defineStore("auth", () => {
         tokenStore.remove();
     }
 
-    return { user, token, setUser, setToken };
+    function logout() {
+        user.value = null;
+        token.value = null;
+        userStore.remove();
+        tokenStore.remove();
+        usePush({ name: "logout" });
+    }
+
+    return { user, token, setUser, setToken, logout };
 });
