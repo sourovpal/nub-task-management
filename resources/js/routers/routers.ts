@@ -33,9 +33,15 @@ const routes: Array<RouteRecordRaw> = [
         beforeEnter: () => isAuthorized(),
         children: [
             {
-                name: "dashboard",
+                name: "dashboard-index-page",
                 path: "/",
                 component: () => import("@views/dashboard/DashboardPage.vue"),
+                beforeEnter: () => checkPermissions(),
+            },
+            {
+                name: "users-index-page",
+                path: "/users",
+                component: () => import("@views/user/UserIndexPage.vue"),
                 beforeEnter: () => checkPermissions(),
             },
         ],

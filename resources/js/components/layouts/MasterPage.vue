@@ -5,10 +5,9 @@ import ContainerBody from "./ContainerBody.vue";
 </script>
 
 <template>
-  <main>
+  <main class="flex">
     <right-sidebar-nav />
-    <section>
-        <h1>Hello</h1>
+    <section class="grow block">
       <top-header-tools-bar />
       <container-body />
     </section>

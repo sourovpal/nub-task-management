@@ -17,20 +17,19 @@ const instance = axios.create({
     },
 });
 
-export const setAuthorizationHeader = (): void => {
-    if (token) instance.defaults.headers["Authorization"] = `Bearer ${token}`;
-    else delete instance.defaults.headers["Authorization"];
-};
-
-setAuthorizationHeader();
+instance.interceptors.request.use(
+    async function (config) {
+        if (token) config.headers.Authorization = `Bearer ${token}`;
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 instance.interceptors.response.use(
-    function (response) {
-        return response;
-    },
+    (response) => response,
     function (error) {
         if (error?.status === 401) authStore.logout();
-        else return error;
+        else return Promise.reject(error);
     }
 );
 

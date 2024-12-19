@@ -1,23 +1,26 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",                      // Use the latest ECMAScript features
-    "module": "ESNext",                      // For ESM (modern JavaScript modules)
-    "moduleResolution": "Node",             // Resolve modules like Node.js
-    "strict": true,                          // Enable strict type-checking
-    "jsx": "preserve",                       // Enable JSX in Vue components
-    "esModuleInterop": true,                 // Allow ES module imports
-    "skipLibCheck": true,                    // Skip type checks for dependencies
-    "forceConsistentCasingInFileNames": true, // Enforce consistent file naming
-    "baseUrl": ".",                          // Base directory for imports
-    "paths": {
-      "@/*": ["resources/js/*"]              // Map `@` to the `resources/js` directory
-    }
-  },
-  "include": [
-    "resources/js/**/*"                      // Include your JavaScript/TypeScript files
-  ],
-  "exclude": [
-    "node_modules",                          // Exclude `node_modules`
-    "public"                                 // Exclude built files in `public`
-  ]
+    "compilerOptions": {
+        "target": "ESNext", // Use the latest ECMAScript features
+        "module": "ESNext", // For ESM (modern JavaScript modules)
+        "moduleResolution": "Node", // Resolve modules like Node.js
+        "strict": true, // Enable strict type-checking
+        "jsx": "preserve", // Enable JSX in Vue components
+        "esModuleInterop": true, // Allow ES module imports
+        "skipLibCheck": true, // Skip type checks for dependencies
+        "forceConsistentCasingInFileNames": true, // Enforce consistent file naming
+        "baseUrl": ".", // Base directory for imports
+        "paths": {
+            "@/*": ["resources/js/*"], // Map `@` to the `resources/js` directory
+            "@components/*": ["./resources/js/components/*"]
+        }
+    },
+    "include": [
+        "./resources/js/**/*.vue",
+        "./resources/js/**/*.ts",
+        "./resources/js/**/*.d.ts"
+    ],
+    "exclude": [
+        "node_modules", // Exclude `node_modules`
+        "public" // Exclude built files in `public`
+    ]
 }

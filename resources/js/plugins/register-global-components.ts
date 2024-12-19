@@ -1,14 +1,19 @@
 import type { App } from "vue";
 import PrimeVue from "primevue/config";
 import Aura from "@primevue/themes/aura";
-import form from "@components/form";
+import form from "@components/Form";
 import router from "../routers/index";
 import { createPinia } from "pinia";
 
-export default async function registerGlobalComponents(app: App) {
+export default function registerGlobalComponents(app: App) {
+    app.use(createPinia());
+
     app.use(PrimeVue, {
         theme: {
             preset: Aura,
+            options: {
+                darkModeSelector: "white",
+            },
         },
     });
 
@@ -16,6 +21,5 @@ export default async function registerGlobalComponents(app: App) {
         app.component(name, component);
     });
 
-    app.use(createPinia());
     app.use(router);
 }

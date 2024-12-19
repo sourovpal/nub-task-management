@@ -2,5 +2,7 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <section class="block">
+    <router-view></router-view>
+  </section>
 </template>
