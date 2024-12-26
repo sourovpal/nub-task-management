@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.color-red {
+    color: rgb(255, 0, 51) !important;
+    .p-menu-item-icon,
+    .p-menu-item-content {
+        color: rgb(255, 0, 51) !important;
+    }
+}

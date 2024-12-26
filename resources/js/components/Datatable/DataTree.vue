@@ -25,23 +25,15 @@ const props = defineProps({
 
 <template>
   <table class="min-w-full leading-normal">
-    <thead>
+    <thead class="top-0 sticky">
       <tr>
         <th
-          v-for="(item, index) in headers"
+          v-for="(head, index) in headers"
           :key="index"
-          :style="{ width: item.width }"
-          class="px-5 py-3 border-b-2 border-gray-150 bg-gray-50 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start"
+          :style="{ 'max-width': head.width, 'min-width': head.width }"
+          class="px-5 py-3 border-b border-b-2 border-gray-200 bg-gray-50- text-xs font-bold text-gray-700 uppercase tracking-wider text-start whitespace-nowrap bg-gray-100"
         >
-          <template v-if="$slots[item.id]">
-            <slot :name="item.id" :item="item" />
-          </template>
-
-          <template v-else>
-            <slot name="th" :item="item">
-              {{ item.label }}
-            </slot>
-          </template>
+          <slot :name="`th-${head.id}`" :item="head">{{ head.label }}</slot>
         </th>
       </tr>
     </thead>
@@ -50,10 +42,15 @@ const props = defineProps({
       <tr v-for="(row, index) in rows" :key="index">
         <template v-for="(head, index) in headers" :key="`${head.id}_${index}`">
           <td
-            v-if="$slots[`tbody-${head.id}`]"
-            class="px-5 py-4 border-b border-gray-200 bg-white text-sm"
+            v-if="$slots[`td-${head.id}`]"
+            class="px-5 py-2 border-b border-gray-200 bg-white text-sm whitespace-nowrap text-gray-700 bg-white"
           >
-            <slot :name="`tbody-${head.id}`" :head="head" :row="row">
+            <slot
+              :name="`td-${head.id}`"
+              :head="head"
+              :row="row"
+              :rowId="index"
+            >
               {{ row }}
             </slot>
           </td>

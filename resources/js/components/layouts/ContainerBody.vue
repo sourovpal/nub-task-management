@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <section class="block">
+  <section class="grow w-full flex flex-col">
     <router-view></router-view>
   </section>
 </template>

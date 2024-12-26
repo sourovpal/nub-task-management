@@ -2,11 +2,7 @@
 </script>
 
 <template>
-  <label class="text-2xl">
-    <slot></slot>
+  <label class="text-base font-semibold text-gray-700 block mb-2">
+    <slot />
   </label>
 </template>
-  
-  
-<style>
-</style>

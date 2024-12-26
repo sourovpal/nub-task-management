@@ -7,7 +7,7 @@ import ContainerBody from "./ContainerBody.vue";
 <template>
   <main class="flex">
     <right-sidebar-nav />
-    <section class="grow block">
+    <section class="flex flex-col overflow-x-hidden w-full">
       <top-header-tools-bar />
       <container-body />
     </section>

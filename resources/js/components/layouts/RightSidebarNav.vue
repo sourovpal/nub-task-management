@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import SidebarBrand from "./SidebarBrand.vue";
+import SidebarMenus from "./SidebarMenus.vue";
 </script>
 
 <template>
   <section
     id="right-sidebar-nav"
-    class="min-w-[16rem] w-[16rem] border-r border-gray-200 h-screen sticky top-0 bg-white"
+    class="px-4 min-w-[18rem] w-[18rem] border-r border-gray-200 h-screen sticky top-0 bg-white"
   >
-    <h1>Hello</h1>
+
+    <sidebar-brand />
+
+    <sidebar-menus />
+
   </section>
 </template>

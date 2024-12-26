@@ -3,7 +3,7 @@ import { InputText, InputIcon, IconField } from "primevue";
 </script>
 
 <template>
-  <InputText></InputText>
+  <InputText class="w-full"></InputText>
 </template>
 
 <style>
