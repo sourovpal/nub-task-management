@@ -3,13 +3,13 @@ import { onMounted, ref } from "vue";
 
 const props = defineProps({
   bg: { type: String, default: "#b2babb" },
-  authHeight: { type: Boolean, default: true },
+  autoHeight: { type: Boolean, default: true },
 });
 const section = ref();
 const height = ref<Number>(0);
 
 function getVisibleHeight(element: any) {
-  if (!props.authHeight) return;
+  if (!props.autoHeight) return;
   const rect = element.getBoundingClientRect();
   return Math.max(
     0,
@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="authHeight" ref="section" class="overflow-x-auto grow">
+  <section v-if="autoHeight" ref="section" class="overflow-x-auto grow">
     <scroll-panel
       class="overflow-y-hidden"
       :style="{ height: height ? `${height}px` : `auto` }"

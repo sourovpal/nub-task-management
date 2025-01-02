@@ -1,24 +1,19 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import CircelButton from "./CircelButton.vue";
+import { Pagination } from "@types";
 
 const props = defineProps({
   pagination: {
-    type: Object as PropType<{
-      from: Number | String;
-      to: Number | String;
-      total: Number | String;
-      next: Number | String | null;
-      prev: Number | String | null;
-      current_page: Number | string | null;
-    }>,
+    type: Object as PropType<Pagination>,
     default: {
       from: 0,
       to: 0,
-      total: 0,
-      next: null,
-      prev: null,
       current_page: null,
+      next_page: null,
+      prev_page: null,
+      last_page: null,
+      total: 0,
     },
   },
 });
@@ -36,8 +31,8 @@ const emits = defineEmits(["change"]);
       <span id="total">{{ pagination.total }}</span>
     </div>
     <circel-button
-      :disabled="!pagination.prev"
-      @click="emits('change', { page: pagination.prev })"
+      :disabled="!pagination.prev_page"
+      @click="emits('change', { page: pagination.prev_page })"
       class="me-3"
     >
       <svg
@@ -53,8 +48,8 @@ const emits = defineEmits(["change"]);
       </svg>
     </circel-button>
     <circel-button
-      :disabled="!pagination.next"
-      @click="emits('change', { page: pagination.next })"
+      :disabled="!pagination.next_page"
+      @click="emits('change', { page: pagination.next_page })"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

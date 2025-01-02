@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import DataTree from "@components/Datatable/DataTree.vue";
 import { Menu } from "primevue";
+import { departmentStore } from "@stores";
+import { formatTimeAgo } from "@helpers";
+
+import DepartmentUpdateOrCreateModal from "./DepartmentUpdateOrCreateModal.vue";
 
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 interface Header {
   id: string;
   label: string;
   width: string;
 }
+
+const { is_fetching, departments } = storeToRefs(departmentStore);
 
 const headers = ref<Header[]>([
   { id: "checkbox", label: "", width: "2rem" },
@@ -19,19 +26,17 @@ const headers = ref<Header[]>([
   { id: "action", label: "", width: "5rem" },
 ]);
 
+const is_open = ref<Boolean>(false);
 const edit_row = ref<Object | null>(null);
-
-const rows = [
-  { id: 1, name: "Sourov Pal" },
-  { id: 1, name: "Sourov Pal" },
-];
 
 const menu = ref();
 const items = ref([
   {
     label: "Edit",
     icon: "pi pi-pen-to-square",
-    command: () => {},
+    command: () => {
+      is_open.value = true;
+    },
   },
   {
     label: "Delete",
@@ -40,8 +45,13 @@ const items = ref([
   },
 ]);
 
-const toggle = (event: Event, row: {}) => {
+function handleEdit(row: {}, open: Boolean = false) {
   edit_row.value = row;
+  is_open.value = open;
+}
+
+const toggleMenu = (event: Event, row: {}) => {
+  handleEdit(row);
   menu.value.toggle(event);
 };
 </script>
@@ -49,20 +59,42 @@ const toggle = (event: Event, row: {}) => {
 <template>
   <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
 
+  <department-update-or-create-modal
+    v-if="is_open"
+    v-model:visible="is_open"
+    :edit="edit_row"
+  />
+
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="rows">
+    <data-tree :headers="headers" :rows="departments">
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>
 
-      <template #td-department-name> Software Engineer </template>
-      <template #td-short-name> ECSE </template>
-      <template #td-last-update> 29/12/2024 </template>
-      <template #td-first-create> 25/12/2024 </template>
+      <template #td-department-name="{ row }">
+        <span
+          @click="handleEdit(row, true)"
+          class="hover:text-green-500 cursor-pointer"
+        >
+          {{ row.name }}
+        </span>
+      </template>
+
+      <template #td-short-name="{ row }">
+        {{ row.short_name }}
+      </template>
+
+      <template #td-last-update="{ row }">
+        {{ formatTimeAgo(row.updated_at) }}
+      </template>
+
+      <template #td-first-create="{ row }">
+        {{ formatTimeAgo(row.created_at) }}
+      </template>
 
       <template #td-action="{ row }">
         <div class="flex items-center justify-end">
-          <circel-button @click="toggle($event, row.id)" class="me-3">
+          <circel-button @click="toggleMenu($event, row)" class="me-3">
             <i class="pi pi-ellipsis-v"></i>
           </circel-button>
         </div>

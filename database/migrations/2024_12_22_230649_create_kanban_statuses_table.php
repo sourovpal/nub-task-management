@@ -11,22 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('boards', function (Blueprint $table) {
+        Schema::create('kanban_statuses', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('owner_id')
-                ->constrained('users')
+            $table->foreignId('project_id')
+                ->constrained('projects')
                 ->onDelete('cascade');
 
             $table->string('name')->unique();
 
-            $table->boolean('allow_checked')->default(false);
+            $table->string('color');
 
-            $table->string('catetorie');
-
-            $table->string('slug');
-
-            $table->string('screenshort')->nullable();
+            $table->integer('position')->default(0);
 
             $table->timestamps();
         });
@@ -37,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('boards');
+        Schema::dropIfExists('kanban_statuses');
     }
 };

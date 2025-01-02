@@ -9,5 +9,12 @@ export default {
     theme: {
         extend: {},
     },
+    variants: {
+        extend: {
+            backgroundColor: ["router-link-exact-active"],
+            textColor: ["router-link-exact-active"],
+            borderColor: ["router-link-exact-active"],
+        },
+    },
     plugins: [],
 };

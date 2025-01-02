@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class BoardCreateRequest extends BaseRequest
+class ProjectCreateRequest extends BaseRequest
 {
     public function rules(): array
     {
-        $categories = array_column((array) config('boardcategories'), 'name');
+        $categories = (array) array_column((array) config('projectcategories'), 'name');
 
         return [
-            'name'      => 'required|string|max:255|unique:boards,name',
+            'name'      => 'required|string|max:255|unique:projects,name',
             'categorie' => [
                 'required',
                 'string',

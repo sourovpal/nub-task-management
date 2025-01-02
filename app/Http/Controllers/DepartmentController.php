@@ -18,12 +18,25 @@ class DepartmentController extends BaseController
     {
         $limit = $request->get('limit', 30);
 
-        $departments = Department::paginate($limit);
+        $departments = Department::query()
+            ->orderBy('created_at', 'DESC')
+            ->paginate($limit);
 
         return response()->json([
             'departments' => $departments->items(),
-            'pagination'  => $departments->items(),
+            'pagination'  => pagination($departments),
         ]);
+    }
+
+    public function list(Request $request)
+    {
+
+        $departments = Department::query()
+            ->orderBy('created_at', 'DESC')
+            ->limit(100)
+            ->get();
+
+        return $departments;
     }
 
     public function find(Department $department)
@@ -60,7 +73,6 @@ class DepartmentController extends BaseController
                 'message' => 'Department created successfully.',
                 'position' => 'toast'
             ],
-            $department,
         ]);
     }
 
@@ -76,7 +88,6 @@ class DepartmentController extends BaseController
                 'message' => 'Department updated successfully.',
                 'position' => 'toast'
             ],
-            $department,
         ]);
     }
 

@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import ToolsBar from './sections/ToolsBar.vue';
+import { nextTick, onMounted, onUnmounted, ref } from "vue";
+import ToolsBar from "./sections/ToolsBar.vue";
+import { projectStore } from "@stores";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
 </script>
 
 <template>
-  <tools-bar/>
+  <tools-bar />
   <section>
     <router-view />
   </section>

@@ -11,7 +11,12 @@
         "baseUrl": ".", // Base directory for imports
         "paths": {
             "@/*": ["resources/js/*"], // Map `@` to the `resources/js` directory
-            "@components/*": ["./resources/js/components/*"]
+            "@services": ["./resources/js/services"],
+            "@helpers": ["./resources/js/helpers"],
+            "@types": ["./resources/js/types"],
+            "@stores": ["./resources/js/stores"],
+            "@plugins": ["./resources/js/plugins"],
+            "@components": ["./resources/js/components"]
         }
     },
     "include": [

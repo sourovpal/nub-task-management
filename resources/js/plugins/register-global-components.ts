@@ -8,10 +8,11 @@ import { createPinia } from "pinia";
 import ScrollPanel from "primevue/scrollpanel";
 import HeaderToolsBar from "@components/layouts/HeaderToolsBar.vue";
 import SectionScrollBar from "@components/layouts/SectionScrollBar.vue";
+import ToastService from 'primevue/toastservice';
 
 export default function registerGlobalComponents(app: App) {
     app.use(createPinia());
-
+    app.use(ToastService);
     app.use(PrimeVue, {
         theme: {
             preset: Aura,

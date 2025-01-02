@@ -11,7 +11,7 @@ export default {
     create: (payload: HttpRequest) => Client.post("/users", payload),
 
     update: (payload: HttpRequest, query: HttpRequest) =>
-        Client.put("/users" + query.id, payload),
+        Client.put("/users/" + query.id, payload),
 
     delete: (query: HttpRequest) => Client.post("/users/" + query.id),
 };

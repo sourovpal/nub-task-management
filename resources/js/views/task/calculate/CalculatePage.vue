@@ -47,8 +47,8 @@ const items = ref([
           </primary-button>
         </div>
       </div>
-      <section-scroll-bar :auth-height="false" style="height: 70vh">
-        <div class="p-5">
+      <section-scroll-bar :auto-height="false" style="height: 70vh">
+        <div id="captureArea" class="p-5">
           <ul class="mt-5">
             <li class="pb-3 text-sm text-gray-500">12/04/2024</li>
             <li v-for="item in 10" :key="item">

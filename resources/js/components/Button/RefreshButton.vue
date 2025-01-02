@@ -3,7 +3,7 @@ import CircelButton from "./CircelButton.vue";
 </script>
 
 <template>
-  <circel-button>
+  <circel-button :class="{ 'pi-spin': $attrs.loading }">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="24px"

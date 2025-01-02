@@ -6,6 +6,10 @@ const props = defineProps({
     type: String as PropType<"small" | "base" | "large">,
     default: "base",
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const sizes: {
@@ -23,8 +27,9 @@ const sizes: {
   <button
     type="button"
     :class="sizes[size]"
-    class="text-white bg-green-700 hover:bg-green-800 font-medium shadow-black"
+    class="text-white bg-green-700 hover:bg-green-800 font-medium shadow-black flex items-center"
   >
+    <i v-if="loading" class="pi pi-spin pi-spinner me-2"></i>
     <slot />
   </button>
 </template>

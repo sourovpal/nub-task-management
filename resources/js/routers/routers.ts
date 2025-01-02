@@ -74,6 +74,20 @@ const routes: Array<RouteRecordRaw> = [
                 ],
             },
             {
+                name: "schedulers-index-page",
+                path: "/schedulers",
+                component: () =>
+                    import("@views/scheduler/SchedulerIndexPage.vue"),
+                beforeEnter: () => checkPermissions(),
+            },
+            {
+                name: "reports-index-page",
+                path: "/reports",
+                component: () =>
+                    import("@views/report/ReportIndexPage.vue"),
+                beforeEnter: () => checkPermissions(),
+            },
+            {
                 name: "users-index-page",
                 path: "/users",
                 component: () => import("@views/user/UserIndexPage.vue"),

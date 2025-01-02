@@ -8,7 +8,7 @@ const is_open = ref(false);
 
 const items = ref([
   { route: "/projects", label: "Recent", icon: "pi pi-objects-column" },
-  { route: "/projects?type=archive", label: "Archive", icon: "pi pi-qrcode" },
+  { route: "/projects?type=archived", label: "Archived", icon: "pi pi-qrcode" },
   { route: "/projects?type=kanban", label: "Kanban", icon: "pi pi-table" },
   {
     route: "/projects?type=calculate",

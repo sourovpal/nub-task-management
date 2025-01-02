@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import DataTree from "@components/Datatable/DataTree.vue";
-
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { userStore } from "@stores";
+import { storeToRefs } from "pinia";
+import { formatTimeAgo } from "@helpers";
+import { Menu } from "primevue";
+import UserUpdateOrCreate from "./UserUpdateOrCreate.vue";
 
 interface Header {
   id: string;
@@ -24,43 +28,125 @@ const headers = ref<Header[]>([
   { id: "action", label: "", width: "5rem" },
 ]);
 
-const rows = [
-  { id: 1, name: "Sourov Pal" },
-  { id: 1, name: "Sourov Pal" },
-  { id: 1, name: "Sourov Pal" },
-  { id: 1, name: "Sourov Pal" },
-];
+const { users } = storeToRefs(userStore);
+
+onMounted(() => userStore.handleFetchUser());
+
+const is_open = ref<Boolean>(false);
+const edit_row = ref<Object | null>(null);
+
+const menu = ref();
+const items = ref([
+  {
+    label: "Profile",
+    icon: "pi pi-user",
+    command: () => {},
+  },
+  {
+    label: "Login Account",
+    icon: "pi pi-lock",
+    command: () => {},
+  },
+  {
+    label: "Edit",
+    icon: "pi pi-pen-to-square",
+    command: () => {
+      is_open.value = true;
+    },
+  },
+  {
+    label: "Delete",
+    icon: "pi pi-trash",
+    class: "color-red",
+  },
+]);
+
+function handleEdit(row: {}, open: Boolean = false) {
+  edit_row.value = row;
+  is_open.value = open;
+}
+
+const toggleMenu = (event: Event, row: {}) => {
+  handleEdit(row);
+  menu.value.toggle(event);
+};
 </script>
 
 <template>
+  <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
+
+  <user-update-or-create
+    v-if="is_open"
+    v-model:visible="is_open"
+    :edit="edit_row"
+  />
+
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="rows">
+    <data-tree :headers="headers" :rows="users">
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>
 
-      <template #td-employee-id> EA15007 </template>
+      <template #td-employee-id="{ row }">
+        <span
+          @click="handleEdit(row, true)"
+          class="hover:text-green-500 cursor-pointer"
+        >
+          {{ `${row.department?.short_name}${row.id}` }}
+        </span>
+      </template>
       <template #td-avatar>
-        <img src="https://via.placeholder.com/200x200" class="rounded-full size-[2.5rem]" alt="">
+        <img
+          src="https://via.placeholder.com/200x200"
+          class="rounded-full size-[2.5rem]"
+          alt=""
+        />
       </template>
 
       <template #td-name="{ row }">
-        {{ row.name }}
+        {{ row.first_name }}
+        {{ row.last_name }}
       </template>
 
-      <template #td-email> example@gmail.com </template>
-      <template #td-phone-number> +88 01919-852044 </template>
-      <template #td-designation> Software Engineer </template>
-      <template #td-department> ECSE </template>
-      <template #td-address> Dhaka </template>
-      <template #td-join-date> 25/12/2024 </template>
-      <template #td-last-update> 29/12/2024 </template>
-      <template #td-first-create> 25/12/2024 </template>
+      <template #td-email="{ row }">
+        {{ row.email }}
+      </template>
 
-      <template #td-action>
-        <circel-button class="me-3">
-          <i class="pi pi-ellipsis-v"></i>
-        </circel-button>
+      <template #td-phone-number="{ row }">
+        {{ row.phone_number ?? "-" }}
+      </template>
+
+      <template #td-designation="{ row }">
+        {{ row.designation ?? "-" }}
+      </template>
+
+      <template #td-department="{ row }">
+        {{ row.department?.name }}
+        <span v-if="row.department"> ({{ row.department?.short_name }}) </span>
+      </template>
+
+      <template #td-address="{ row }">
+        {{ row.address ?? "-" }}
+      </template>
+
+      <template #td-join-date="{ row }">
+        {{ row.join_date ?? "-" }}
+      </template>
+
+      <template #td-last-update="{ row }">
+        {{ formatTimeAgo(row.updated_at) }}
+      </template>
+
+      <template #td-first-create="{ row }">
+        {{ formatTimeAgo(row.created_at) }}
+      </template>
+
+      <template #td-action="{ row }">
+        <div class="flex items-center justify-end">
+          <circel-button @click="toggleMenu($event, row)" class="me-3">
+            <i class="pi pi-ellipsis-v"></i>
+          </circel-button>
+        </div>
       </template>
     </data-tree>
   </section-scroll-bar>

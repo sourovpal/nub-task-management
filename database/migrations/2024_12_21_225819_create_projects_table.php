@@ -11,16 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_statuses', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('board_id')
-                ->constrained('boards')
+            $table->foreignId('owner_id')
+                ->constrained('users')
                 ->onDelete('cascade');
 
             $table->string('name')->unique();
 
-            $table->integer('position')->default(0);
+            $table->boolean('allow_checked')->default(false);
+
+            $table->string('categorie');
+
+            $table->string('slug')->unique();
+
+            $table->string('screenshort')->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_statuses');
+        Schema::dropIfExists('projects');
     }
 };

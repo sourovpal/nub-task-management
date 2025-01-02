@@ -1,14 +1,48 @@
-<script setup>
+<script setup lang="ts">
+import { formatTimeAgo } from "@helpers";
 import { AvatarGroup, Avatar } from "primevue";
+import { ref } from "vue";
+import { kanbanStore } from "@stores";
+import { storeToRefs } from "pinia";
+const emits = defineEmits(["handleFetch"]);
+const props = defineProps({
+  task: { type: Object },
+});
+
+const is_dragging = ref(false);
+
+function handleDragStart(event: DragEvent) {
+  kanbanStore.handleDragStart(event);
+  is_dragging.value = true;
+}
+
+function handleDragStop(event: DragEvent) {
+  kanbanStore.handleDragStop(event);
+  is_dragging.value = false;
+  emits("handleFetch", true);
+}
 </script>
 
 <template>
-  <div :draggable="true" class="bg-white shadow-sm rounded-lg p-4 block mb-4">
-    <h2 class="text-md font-semibold text-gray-800">Todo Task</h2>
-    <p class="text-gray-500 text-xs">Last Update: 12:25 AM</p>
+  <div
+    @dragstart.self="handleDragStart"
+    @dragend.self="handleDragStop"
+    :draggable="true"
+    :class="{
+      'is-dragging bg-green-100 cursor-move': is_dragging,
+      'bg-white': !is_dragging,
+    }"
+    class="shadow-sm rounded-lg p-4 block mb-4 drag-item task"
+  >
+    <h2 class="text-md font-semibold text-gray-800">
+      {{ task.title }}
+    </h2>
+    <p class="text-gray-500 text-xs">
+      Last Update: {{ formatTimeAgo(task.updated_at) }}
+    </p>
     <div class="mt-3 flex justify-between items-center">
       <div>
-        <span class="font-bold text-gray-500 text-sm">KB-1</span>
+        <span class="font-bold text-gray-500 text-sm">KB-{{ task.id }}</span>
       </div>
       <div>
         <AvatarGroup>
@@ -24,3 +58,9 @@ import { AvatarGroup, Avatar } from "primevue";
     </div>
   </div>
 </template>
+
+<style>
+.task {
+  /* cursor: move; */
+}
+</style>

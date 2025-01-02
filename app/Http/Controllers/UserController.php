@@ -18,11 +18,15 @@ class UserController extends BaseController
 
     public function index(Request $request)
     {
-        $users = UserRepository::all();
+        $limit = $request->get('limit', 20);
+        $users = User::query()
+            ->with('department')
+            ->orderBy('id', 'DESC')
+            ->paginate($limit);
 
         return response()->json([
             'users' => $users->items(),
-            'pagination' => $users->pagination()
+            'pagination' => pagination($users)
         ]);
     }
 
@@ -50,28 +54,44 @@ class UserController extends BaseController
     {
         $attributes = (array) $request->validated();
 
+        unset($attributes['department']);
+
         $attributes = array_merge(
             $attributes,
             [
+                'department_id' => $request->department,
                 'password' => Hash::make($request->password)
             ]
         );
 
         $user = User::create($attributes);
 
-        return response()->json($user);
+        return response()->json([
+            'type' => 'success',
+            'message' => 'User created successfully.'
+        ]);
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $attributes = (array) $request->validated();
+
+        unset($attributes['department']);
+
+        $attributes = array_merge(
+            $attributes,
+            [
+                'department_id' => $request->department,
+                'password' => Hash::make($request->password)
+            ]
+        );
+
+        $user->update($attributes);
 
         return response()->json([
-            'alert' => [
-                'type' => 'success',
-                'message' => 'User updated successfully.',
-                'position' => 'toast'
-            ]
+            'type' => 'success',
+            'message' => 'User updated successfully.',
+            'position' => 'toast'
         ]);
     }
 

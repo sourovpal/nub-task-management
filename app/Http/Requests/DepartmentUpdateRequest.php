@@ -8,8 +8,8 @@ class DepartmentUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'        => 'required|string|max:255|unique:departments,name,' . $this->route('department'),
-            'short_name'  => 'required|string|max:255|unique:departments,short_name,' . $this->route('department'),
+            'name'        => 'required|string|max:255|unique:departments,name,' . $this->route('department.id'),
+            'short_name'  => 'required|string|max:255|unique:departments,short_name,' . $this->route('department.id'),
         ];
     }
 }

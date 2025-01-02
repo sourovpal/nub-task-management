@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('status_id')
-                ->constrained('task_statuses')
+                ->constrained('kanban_statuses')
                 ->onDelete(null);
 
-            $table->foreignId('board_id')
-                ->constrained('boards')
+            $table->foreignId('project_id')
+                ->constrained('projects')
                 ->onDelete('cascade');
 
             $table->string('title');

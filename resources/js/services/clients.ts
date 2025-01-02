@@ -4,8 +4,6 @@ import { authStore } from "@stores";
 import { HttpRequest } from "@types";
 import { storeToRefs } from "pinia";
 
-const { user, token } = storeToRefs(authStore);
-
 const instance = axios.create({
     baseURL: useEnv("api_url"),
     timeout: 60000,
@@ -19,6 +17,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     async function (config) {
+        const { user, token } = storeToRefs(authStore);
         if (token) config.headers.Authorization = `Bearer ${token}`;
         return config;
     },
