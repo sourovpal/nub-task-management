@@ -33,7 +33,14 @@ watch(
                 class="bg-white shadow-md rounded-lg p-4"
               >
                 <img
+                  v-if="project.screenshort"
                   :src="`http://localhost/task-management/public/storage/${project.screenshort}`"
+                  alt="Card Image"
+                  class="rounded-lg w-full h-[8rem]"
+                />
+                <img
+                  v-else
+                  src="https://via.placeholder.com/200x200"
                   alt="Card Image"
                   class="rounded-lg w-full h-[8rem]"
                 />

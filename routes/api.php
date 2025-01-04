@@ -63,5 +63,6 @@ Route::prefix('v1')->group(function () {
             Route::get('/tasks', 'tasks');
             Route::post('/status', 'createStatus');
             Route::post('/task', 'createTask');
+            Route::put('/task/position', 'position');
         });
 });

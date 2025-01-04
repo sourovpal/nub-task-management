@@ -27,8 +27,10 @@ export const useKanbanStore = defineStore("kanban", () => {
 
     function handleDragStop(event: DragEvent) {}
 
-    function handleDragOver(event, fetchTasks = () => {}) {
-        const zone = event.target.closest(".p-scrollpanel-content");
+    function handleDragOver(event) {
+        event.preventDefault();
+
+        const zone = event.target.closest(".task-list");
         if (!zone) return;
 
         const bottomTask = insertAboveTask(zone, event.clientY);
@@ -39,8 +41,6 @@ export const useKanbanStore = defineStore("kanban", () => {
         } else {
             zone.insertBefore(curTask, bottomTask);
         }
-
-        fetchTasks();
     }
 
     const insertAboveTask = (zone, mouseY) => {
@@ -48,7 +48,6 @@ export const useKanbanStore = defineStore("kanban", () => {
 
         let closestTask = null;
         let closestOffset = Number.NEGATIVE_INFINITY;
-
         els.forEach((task) => {
             const { top } = task.getBoundingClientRect();
 

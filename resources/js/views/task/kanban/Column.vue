@@ -24,6 +24,11 @@ function handleFetchTask(reset = false) {
       else tasks.value = _tasks.concat(tasks.value);
 
       pagination.value = _pagination;
+
+      Object.assign(props.status, {
+        ...props.status,
+        tasks_count: _pagination?.total ?? 0,
+      });
     })
     .catch(() => {})
     .finally(() => {});
@@ -31,22 +36,60 @@ function handleFetchTask(reset = false) {
 
 onMounted(() => handleFetchTask());
 
-const handleFetch = useDebounceFn(handleFetchTask, 1000);
+const listRef = ref(null);
 
+function handleDrop() {
+  const items = listRef.value?.querySelectorAll(".task");
+  const tasks_id = [];
+
+  items.forEach((item, index) => {
+    let id = item.getAttribute("data-id");
+    if (id) tasks_id.push(id);
+  });
+
+  const attributes = {
+    tasks: tasks_id,
+    status_id: props.status?.id,
+  };
+
+  Http.kanban
+    .updatePosition(attributes)
+    .then(() => {
+      handleFetchTask(true);
+    })
+    .catch(() => {})
+    .finally(() => {});
+}
+
+const handleFetchTaskDelay = useDebounceFn(() => handleFetchTask(true), 100);
 </script>
 
 <template>
-  <div class="p-4 whitespace-normal bg-gray-200 columns">
+  <div class="p-4 whitespace-normal bg-gray-200 columns w-[20rem]">
     <Status :status="status" :handleFetchTask="handleFetchTask" />
 
     <section-scroll-bar
-      @dragover.stop="kanbanStore.handleDragOver($event, handleFetch)"
       :auto-height="false"
       style="height: 85vh"
       class="drag-over"
     >
-      <br />
-      <task v-for="item in tasks" :task="item" :key="item.id" @handleFetch="handleFetch"></task>
+      <div
+        :key="`${tasks?.length}-${status?.id}`"
+        ref="listRef"
+        :id="`status-${status?.id}`"
+        class="task-list pt-4 h-full"
+        @dragover.stop="kanbanStore.handleDragOver($event, handleFetch)"
+        @dragend="handleDrop"
+      >
+        <task
+          v-for="item in tasks"
+          :task="item"
+          :key="item.id"
+          :data-id="item.id"
+          :data-position="item.position"
+          @handleFetch="handleFetchTaskDelay"
+        />
+      </div>
     </section-scroll-bar>
   </div>
 </template>

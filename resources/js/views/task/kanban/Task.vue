@@ -29,20 +29,31 @@ function handleDragStop(event: DragEvent) {
     @dragend.self="handleDragStop"
     :draggable="true"
     :class="{
-      'is-dragging bg-green-100 cursor-move': is_dragging,
+      'is-dragging bg-blue-600 text-white cursor-move': is_dragging,
       'bg-white': !is_dragging,
     }"
     class="shadow-sm rounded-lg p-4 block mb-4 drag-item task"
   >
-    <h2 class="text-md font-semibold text-gray-800">
+    <h2
+      class="text-md font-semibold"
+      :class="{ 'text-gray-500': !is_dragging, 'text-white': is_dragging }"
+    >
       {{ task.title }}
     </h2>
-    <p class="text-gray-500 text-xs">
+    <p
+      class="text-gray-500 text-xs"
+      :class="{ 'text-gray-500': !is_dragging, 'text-white': is_dragging }"
+    >
       Last Update: {{ formatTimeAgo(task.updated_at) }}
     </p>
     <div class="mt-3 flex justify-between items-center">
       <div>
-        <span class="font-bold text-gray-500 text-sm">KB-{{ task.id }}</span>
+        <span
+          class="font-bold text-gray-500 text-sm"
+          :class="{ 'text-gray-500': !is_dragging, 'text-white': is_dragging }"
+        >
+          KB-{{ task.id }}
+        </span>
       </div>
       <div>
         <AvatarGroup>

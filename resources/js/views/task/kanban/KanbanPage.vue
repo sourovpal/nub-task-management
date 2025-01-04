@@ -30,7 +30,7 @@ onMounted(() => kanbanStore.handleFetchStatus(route.params.id));
     class="kanban-body-scroll"
   >
     <div class="whitespace-nowrap w-full">
-      <div class="grid grid-flow-col auto-cols-[22rem] gap-0">
+      <div class="grid grid-flow-col auto-cols-[20rem] gap-0">
         <column v-for="item in statuses" :key="item.id" :status="item" />
         <add-column />
       </div>

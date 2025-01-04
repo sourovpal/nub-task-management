@@ -15,4 +15,9 @@ class KanbanStatus extends Model
         'position',
         'project_id',
     ];
+
+    public function tasks()
+    {
+        return $this->belongsTo(Task::class, 'id', 'status_id');
+    }
 }

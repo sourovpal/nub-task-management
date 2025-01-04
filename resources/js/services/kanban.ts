@@ -11,6 +11,9 @@ export default {
 
     createTask: (payload: HttpRequest) => Client.post("/kanban/task", payload),
 
+    updatePosition: (payload: HttpRequest) =>
+        Client.put("/kanban/task/position", payload),
+
     // list: (query: HttpRequest) => Client.get("/users/list", query),
 
     // find: (query: HttpRequest) => Client.get("/users/" + query.id),

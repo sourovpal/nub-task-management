@@ -7,6 +7,7 @@ use App\Http\Requests\KanbanTaskCreateRequest;
 use App\Models\KanbanStatus;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KanbanController extends BaseController
 {
@@ -19,6 +20,7 @@ class KanbanController extends BaseController
     public function statuses(Request $request)
     {
         $status = KanbanStatus::query()
+            ->withCount('tasks')
             ->where('project_id', $request->project_id)
             ->orderBy('position', 'ASC')
             ->limit(100)
@@ -81,5 +83,23 @@ class KanbanController extends BaseController
     public static function maxPosition()
     {
         return KanbanStatus::max('position');
+    }
+
+    public function position(Request $request)
+    {
+        $tasks = (array)$request->tasks;
+
+        $status_id = $request->status_id;
+
+        $max = self::taskMaxPosition($status_id);
+
+        foreach ($tasks as $index => $id) {
+            DB::table('tasks')
+                ->where('id', $id)
+                ->update([
+                    'status_id' => $status_id,
+                    'position' => (($max + count($tasks)) - ($index + 1)),
+                ]);
+        }
     }
 }

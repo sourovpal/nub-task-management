@@ -10,6 +10,7 @@ class KanbanStatusCreateRequest extends FormRequest
     {
         return [
             'name'       => 'required|string|max:255|unique:kanban_statuses,name',
+            // 'name'       => 'required|string|max:255',
             'color'      => 'required|string|max:255',
             "project_id" => 'required|exists:projects,id'
         ];

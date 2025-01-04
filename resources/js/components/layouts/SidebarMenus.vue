@@ -77,16 +77,16 @@ const menus = reactive<
     query: {},
     type: "menu",
   },
-  {
-    icon: "pi pi-lock",
-    label: "User Roles",
-    url: "/",
-    query: {},
-    type: "menu",
-  },
-  { label: "Settings", type: "divider" },
-  { icon: "pi pi-user", label: "Profile", url: "/", query: {}, type: "menu" },
-  { icon: "pi pi-cog", label: "Settings", url: "/", query: {}, type: "menu" },
+  // {
+  //   icon: "pi pi-lock",
+  //   label: "User Roles",
+  //   url: "/",
+  //   query: {},
+  //   type: "menu",
+  // },
+  // { label: "Settings", type: "divider" },
+  // { icon: "pi pi-user", label: "Profile", url: "/", query: {}, type: "menu" },
+  // { icon: "pi pi-cog", label: "Settings", url: "/", query: {}, type: "menu" },
 ]);
 </script>
 

@@ -26,7 +26,7 @@ const is_open = ref<Boolean>(false);
   >
     <h2 class="text-md font-semibold">
       {{ status.name }}
-      <span class="px-1">(10)</span>
+      <span class="px-1">({{ status.tasks_count }})</span>
     </h2>
     <div @click="is_open = true" class="px-2 py-1 cursor-pointer">
       <i class="pi pi-plus"></i>
