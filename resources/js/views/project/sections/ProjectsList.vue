@@ -21,16 +21,16 @@ watch(
   <section-scroll-bar>
     <section class="overflow-y-auto sticky top-0">
       <div class="bg-gray-200 h-auto p-4">
-        <div class="container mx-auto">
-          <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+        <div class="w-full">
+          <div class="flex flex-wrap gap-5">
             <!-- Card 1 -->
-            <template v-for="(project, index) in projects" :key="project.id">
+            <template v-for="(project, index) in projects.concat([...projects, ...projects, ...projects, ...projects, ...projects])" :key="project.id">
               <router-link
                 :to="{
                   name: `${project.categorie}-page`,
                   params: { id: project.id },
                 }"
-                class="bg-white shadow-md rounded-lg p-4"
+                class="bg-white shadow-md rounded-lg p-4 w-[18rem]"
               >
                 <img
                   v-if="project.screenshort"

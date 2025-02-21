@@ -4,6 +4,8 @@ import { AvatarGroup, Avatar } from "primevue";
 import { ref } from "vue";
 import { kanbanStore } from "@stores";
 import { storeToRefs } from "pinia";
+import EditTask from "./EditTask.vue";
+
 const emits = defineEmits(["handleFetch"]);
 const props = defineProps({
   task: { type: Object },
@@ -21,12 +23,20 @@ function handleDragStop(event: DragEvent) {
   is_dragging.value = false;
   emits("handleFetch", true);
 }
+
+const toggleEditTask = ref<Boolean>(false);
+
+function handleEditTask() {
+  toggleEditTask.value = !toggleEditTask.value;
+}
 </script>
 
 <template>
+  <edit-task :header="task?.title" :task="task" v-model:visible="toggleEditTask" />
   <div
     @dragstart.self="handleDragStart"
     @dragend.self="handleDragStop"
+    @click="handleEditTask()"
     :draggable="true"
     :class="{
       'is-dragging bg-blue-600 text-white cursor-move': is_dragging,
