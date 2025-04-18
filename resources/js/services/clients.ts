@@ -44,7 +44,9 @@ function handleError(error: any) {
         status: error.status,
     };
 
-    if (error.status == 422) payload["errors"] = error.response?.data ?? null;
+    if (error.status == 422)
+        payload["errors"] =
+            error.response?.data.errors ?? error.response?.data ?? null;
     else if (error.status == 429)
         payload["alert"] = error.response?.data ?? null;
     else payload["data"] = error.response?.data ?? null;

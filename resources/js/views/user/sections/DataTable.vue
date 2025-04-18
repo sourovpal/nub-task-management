@@ -7,26 +7,33 @@ import { formatTimeAgo } from "@helpers";
 import { Menu } from "primevue";
 import UserUpdateOrCreate from "./UserUpdateOrCreate.vue";
 
-
 interface Header {
-  id: string;
+  unique_id: string;
   label: string;
-  width: string;
+  style: object;
 }
 const headers = ref<Header[]>([
-  { id: "checkbox", label: "", width: "3rem" },
-  { id: "employee-id", label: "ID", width: "5rem" },
-  { id: "avatar", label: "Avatar", width: "5rem" },
-  { id: "name", label: "Name", width: "15rem" },
-  { id: "email", label: "Email", width: "15rem" },
-  { id: "phone-number", label: "Phone Number", width: "10rem" },
-  { id: "designation", label: "Designation", width: "15rem" },
-  { id: "department", label: "Department", width: "15rem" },
-  { id: "address", label: "Address", width: "20rem" },
-  { id: "join-date", label: "Join Date", width: "8rem" },
-  { id: "last-update", label: "Last Update", width: "10rem" },
-  { id: "first-create", label: "First Create", width: "10rem" },
-  { id: "action", label: "", width: "5rem" },
+  { unique_id: "checkbox", label: "", style: { width: "3rem" } },
+  { unique_id: "employee-id", label: "ID", style: { width: "5rem" } },
+  { unique_id: "avatar", label: "Avatar", style: { width: "5rem" } },
+  { unique_id: "name", label: "Name", style: { width: "15rem" } },
+  { unique_id: "email", label: "Email", style: { width: "15rem" } },
+  {
+    unique_id: "phone-number",
+    label: "Phone Number",
+    style: { width: "10rem" },
+  },
+  { unique_id: "designation", label: "Designation", style: { width: "15rem" } },
+  { unique_id: "department", label: "Department", style: { width: "15rem" } },
+  { unique_id: "address", label: "Address", style: { width: "20rem" } },
+  { unique_id: "join-date", label: "Join Date", style: { width: "8rem" } },
+  { unique_id: "last-update", label: "Last Update", style: { width: "10rem" } },
+  {
+    unique_id: "first-create",
+    label: "First Create",
+    style: { width: "10rem" },
+  },
+  { unique_id: "action", label: "", style: { width: "5rem" } },
 ]);
 
 const { users } = storeToRefs(userStore);
@@ -83,7 +90,10 @@ const toggleMenu = (event: Event, row: {}) => {
   />
 
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="users.data" :loading="users.loading">
+    <data-tree
+      :headers="headers"
+      :payload="users.data"
+    >
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>

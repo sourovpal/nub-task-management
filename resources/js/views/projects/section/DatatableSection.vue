@@ -3,23 +3,17 @@ import { projectStore } from "@stores";
 import DataTree from "@components/Datatable/DataTree.vue";
 import { storeToRefs } from "pinia";
 import { usePush } from "@routers";
-const { headers } = storeToRefs(projectStore);
-const data = [
-  {
-    id: 1,
-    title: "Ecommerce Application Design and Development",
-    description: "Description 1",
-    status: "active",
-    start_date: "2023-01-01",
-    due_date: "2023-01-02",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-02",
-  },
-];
+import { onMounted, ref } from "vue";
+import EditProjectModal from "../components/EditProjectModal.vue";
+
+const { headers, projectsData } = storeToRefs(projectStore);
 
 function handleDelete({ item }) {
   console.log("Delete clicked", item.row);
 }
+
+const toggle_edit_modal = ref(false);
+const editAttributes = ref({});
 
 const menuItems = (row) => [
   {
@@ -27,14 +21,15 @@ const menuItems = (row) => [
     icon: "pi pi-fw pi-pencil",
     row,
     command: (e) => {
-      console.log("Edit clicked", e, row);
+      editAttributes.value = row;
+      toggle_edit_modal.value = true;
     },
   },
   {
     label: "Start Work",
     icon: "pi pi-sitemap",
     row,
-    command:({item})=> usePush(`/projects/${item.row.id}/board`),
+    command: ({ item }) => usePush(`/projects/${item.row.id}/board`),
   },
   {
     label: "Delete",
@@ -43,9 +38,20 @@ const menuItems = (row) => [
     command: handleDelete,
   },
 ];
+
+onMounted(() => projectStore.handleFetchProjects());
 </script>
 <template>
-  <data-tree :headers="headers" :payload="data" style="height:85vh;">
+  <EditProjectModal
+    v-if="toggle_edit_modal"
+    v-model:visible="toggle_edit_modal"
+    :edit="editAttributes"
+  />
+  <data-tree
+    :headers="headers"
+    :payload="projectsData.data"
+    style="height: 85vh"
+  >
     <template #td-checkbox>
       <form-checkbox />
     </template>

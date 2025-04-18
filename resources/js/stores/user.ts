@@ -44,6 +44,10 @@ export const useUserStore = defineStore("user", () => {
         },
     });
 
+    const userList = reactive({
+        data: [],
+    });
+
     function handleFetchUser(payload: FetchPayload = {}) {
         users.loading = true;
 
@@ -79,9 +83,9 @@ export const useUserStore = defineStore("user", () => {
 
         Http.department
             .list()
-            .then(({ users: userList }: { users: User[] }) => {
+            .then((data) => {
                 // Assigning fetched users to the reactive users.data
-                users.data = userList;
+                userList.data = data;
             })
             .catch((error: Error) => {
                 console.error("Error fetching user list:", error);
@@ -91,9 +95,12 @@ export const useUserStore = defineStore("user", () => {
             });
     }
 
+    // handleFetchUserList();
+
     return {
         is_fatching,
         users,
+        userList,
         handleFetchUser,
         handleFetchUserList,
     };

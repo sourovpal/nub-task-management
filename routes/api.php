@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,21 +55,27 @@ Route::prefix('v1')->group(function () {
         ->controller(ProjectController::class)
         ->group(function () {
             Route::get('/', 'index');
-            Route::get('/{department}', 'find');
-            Route::get('/{department}/show', 'show');
-            Route::post('/screenshot/{project}', 'screenshot');
-            Route::post('/', 'create');
-            Route::put('/{department}', 'update');
-            Route::delete('/{department}', 'delete');
+            Route::get('/{id}', 'find');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
         });
 
-    Route::prefix('/kanban')
-        ->controller(KanbanController::class)
+    Route::prefix('/status')
+        ->controller(StatusController::class)
         ->group(function () {
-            Route::get('/statuses', 'statuses');
-            Route::get('/tasks', 'tasks');
-            Route::post('/status', 'createStatus');
-            Route::post('/task', 'createTask');
-            Route::put('/task/position', 'position');
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+
+    Route::prefix('/tasks')
+        ->controller(ProjectTaskController::class)
+        ->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
         });
 });

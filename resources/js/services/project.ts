@@ -20,4 +20,10 @@ export default {
         query: HttpRequest,
         options: HttpRequest
     ) => Client.post("/projects/screenshot/" + query.id, payload, options),
+
+    statusAll: (query: HttpRequest) => Client.get("/status?id=" + query.id),
+    createStatus: (payload: HttpRequest) => Client.post("/status", payload),
+    
+    tasksAll:(query: HttpRequest) => Client.get("/tasks?id=" + query.id),
+    createTask: (payload: HttpRequest) => Client.post("/tasks", payload),
 };

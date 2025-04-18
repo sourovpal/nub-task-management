@@ -5,6 +5,8 @@ import { nextTick, reactive, ref } from "vue";
 import Http from "@services";
 import { Pagination } from "@types";
 import router, { usePush } from "@routers";
+import { AxiosResponse } from "axios";
+import { dateTimeFormate } from "@helpers";
 
 export const useProjectStore = defineStore("project", () => {
     const headers = ref([
@@ -38,7 +40,7 @@ export const useProjectStore = defineStore("project", () => {
                 "max-width": "10rem",
             },
             item(row) {
-                return row.start_date;
+                return dateTimeFormate(row.start_date, "YYYY-MM-DD");
             },
         },
         {
@@ -49,7 +51,7 @@ export const useProjectStore = defineStore("project", () => {
                 "max-width": "10rem",
             },
             item(row) {
-                return row.due_date;
+                return dateTimeFormate(row.due_date, "YYYY-MM-DD");
             },
         },
         {
@@ -68,7 +70,7 @@ export const useProjectStore = defineStore("project", () => {
                 "max-width": "10rem",
             },
             item(row) {
-                return row.created_at;
+                return dateTimeFormate(row.created_at, "YYYY-MM-DD");
             },
         },
         {
@@ -84,7 +86,60 @@ export const useProjectStore = defineStore("project", () => {
         },
     ]);
 
+    const projectsData = ref({
+        data: [],
+        current_page: 1,
+        from: 1,
+        last_page: 1,
+        per_page: 10,
+        to: 0,
+        total: 0,
+    });
+
+    const currentProject = reactive({
+        id: null,
+        title: null,
+    });
+
+    const projectStages = ref([]);
+
+    function handleFetchProjects() {
+        Http.project
+            .all({})
+            .then((response: AxiosResponse) => {
+                projectsData.value = response;
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    }
+
+    function handleFindProject() {
+        Http.project
+            .find({ id: currentProject.id })
+            .then((response: AxiosResponse) => {
+                Object.assign(currentProject, response);
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    }
+
+    function handleFetchStage() {
+        Http.project
+            .statusAll({ id: currentProject.id })
+            .then((response: AxiosResponse) => {
+                projectStages.value = response;
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    }
+
     return {
         headers,
+        projectsData,
+        projectStages,
+        currentProject,
+        handleFindProject,
+        handleFetchStage,
+        handleFetchProjects,
     };
 });

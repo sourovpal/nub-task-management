@@ -9,3 +9,7 @@
         color: rgb(255, 0, 51) !important;
     }
 }
+body
+{
+    @apply bg-gray-100;
+}

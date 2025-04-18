@@ -40,6 +40,7 @@
         "vue-chart-3": "^3.1.8",
         "vue-loader": "^17.3.1",
         "vue-router": "^4.5.0",
-        "vue-use": "^0.2.0"
+        "vue-use": "^0.2.0",
+        "vue3-hot-toast": "^0.0.5"
     }
 }

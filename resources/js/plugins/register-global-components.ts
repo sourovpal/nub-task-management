@@ -6,7 +6,6 @@ import form from "@components/Form";
 import button from "@components/Button";
 import router from "../routers/index";
 import { createPinia } from "pinia";
-import ScrollPanel from "primevue/scrollpanel";
 import HeaderToolsBar from "@components/layouts/HeaderToolsBar.vue";
 import SectionScrollBar from "@components/layouts/SectionScrollBar.vue";
 import ToastService from "primevue/toastservice";
@@ -23,6 +22,7 @@ import {
     Dialog,
     Textarea,
     ScrollPanel,
+    ColorPicker,
 } from "primevue";
 
 export default function registerGlobalComponents(app: App) {
@@ -60,8 +60,8 @@ export default function registerGlobalComponents(app: App) {
     app.component("ScrollPanel", ScrollPanel);
     app.component("ActionMenu", ActionMenu);
     app.component("CustomModal", CustomModal);
+    app.component("ColorPicker", ColorPicker);
     app.component("QuillEditor", QuillEditor);
-    app.component("QuillEditor", CustomScroll);
 
     app.use(router);
 }

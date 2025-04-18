@@ -10,20 +10,28 @@ import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
 interface Header {
-  id: string;
+  unique_id: string;
   label: string;
-  width: string;
+  style: object;
 }
 
 const { departments } = storeToRefs(departmentStore);
 
 const headers = ref<Header[]>([
-  { id: "checkbox", label: "", width: "2rem" },
-  { id: "department-name", label: "Department", width: "15rem" },
-  { id: "short-name", label: "Short Name", width: "10rem" },
-  { id: "last-update", label: "Last Update", width: "10rem" },
-  { id: "first-create", label: "First Create", width: "10rem" },
-  { id: "action", label: "", width: "5rem" },
+  { unique_id: "checkbox", label: "", style: { width: "2rem" } },
+  {
+    unique_id: "department-name",
+    label: "Department",
+    style: { width: "15rem" },
+  },
+  { unique_id: "short-name", label: "Short Name", style: { width: "10rem" } },
+  { unique_id: "last-update", label: "Last Update", style: { width: "10rem" } },
+  {
+    unique_id: "first-create",
+    label: "First Create",
+    style: { width: "10rem" },
+  },
+  { unique_id: "action", label: "", style: { width: "5rem" } },
 ]);
 
 const is_open = ref<Boolean>(false);
@@ -66,7 +74,7 @@ const toggleMenu = (event: Event, row: {}) => {
   />
 
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="departments.data">
+    <data-tree :headers="headers" :payload="departments.data">
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>

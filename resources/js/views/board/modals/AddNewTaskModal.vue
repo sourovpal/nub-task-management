@@ -5,23 +5,25 @@ import Http from "@services";
 import toast from "vue3-hot-toast";
 import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
-const { headers, projectsData } = storeToRefs(projectStore);
-
-const attributes = ref({
-  title: "",
-  description: "",
-  start_date: "",
-  due_date: "",
-  users: [],
+const props = defineProps({
+  stage: Object,
 });
+const emits = defineEmits(["fetch"]);
+const attributes = ref({
+  name: "",
+  description: "",
+  priority: "low",
+  due_date: "",
+});
+
 const isLoading = ref(false);
-function handleProjectCreate() {
+function handleTaskCreate() {
   isLoading.value = true;
   Http.project
-    .create(attributes.value)
+    .createTask({ ...attributes.value, status_id: props.stage.id })
     .then(({ message }) => {
       toast.success(message);
-      projectStore.handleFetchProjects();
+      emits("fetch", true);
     })
     .catch(({ errors }) => {
       if (errors) return (validationErrors.value = errors);
@@ -54,9 +56,9 @@ function handleProjectCreate() {
       <div class="col-span-7 pl-4 pb-4">
         <div class="w-full mb-3">
           <form-input
-            label="Title"
-            error-name="title"
-            v-model="attributes['title']"
+            label="Name"
+            error-name="name"
+            v-model="attributes['name']"
             :errors="validationErrors"
           />
         </div>
@@ -119,13 +121,29 @@ function handleProjectCreate() {
 
         <div class="grid grid-cols-2 gap-4">
           <div class="col-span-2">
-            <form-input
-              label="Start Date"
-              error-name="start_date"
-              type="date"
-              v-model="attributes['start_date']"
-              :errors="validationErrors"
-            />
+            <form-label>Priority</form-label>
+            <div class="grid gap-2 grid-flow-col">
+              <div
+                v-for="(item, index) in ['low', 'medium', 'high']"
+                :key="index"
+                class="col-span-2 flex items-center"
+              >
+                <input
+                  type="radio"
+                  class="shrink-0 border-gray-200 rounded-sm text-blue-600 focus:ring-blue-500 checked:border-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                  id="hs-checkbox-group-2"
+                  name="priority"
+                  :value="item"
+                  v-model="attributes['priority']"
+                />
+                <label
+                  for="hs-checkbox-group-2"
+                  class="text-gray-700 ms-2 dark:text-neutral-400 text-base capitalize"
+                >
+                  {{ item }}
+                </label>
+              </div>
+            </div>
           </div>
           <div class="col-span-2">
             <form-input
@@ -144,8 +162,8 @@ function handleProjectCreate() {
             icon="pi pi-save"
             :loading="isLoading"
             label="Save Change"
-            :disabled="!attributes['title']"
-            @click="handleProjectCreate"
+            :disabled="!attributes['name']"
+            @click="handleTaskCreate"
           />
         </div>
       </div>

@@ -19,23 +19,28 @@ class ProjectController extends BaseController
 
         $search = $request->input('search', '');
 
-        $projects = Project::orderBy('position', 'asc')->paginate($limit);
+        $projects = Project::orderBy('id', 'DESC')->paginate($limit);
 
-        return response()->json([
-            'data' => $projects->items(),
-            'pagination' => pagination($projects),
-        ]);
+        return response()->json($projects, Response::HTTP_OK);
+    }
+
+    public function find(Request $request)
+    {
+        $project = Project::where('id', $request->id)->firstOrFail();
+
+        return response()->json($project, Response::HTTP_OK);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'due_date' => 'required|date',
         ]);
 
-        Project::create($request->all());
+        Project::create($request->only(['title', 'description', 'start_date', 'due_date']));
 
         return response()->json([
             'message' => 'Project created successfully.',
@@ -44,8 +49,10 @@ class ProjectController extends BaseController
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'due_date' => 'required|date',
         ]);
 
         $project = Project::findOrFail($id);
@@ -64,19 +71,10 @@ class ProjectController extends BaseController
             'message' => 'Project updated successfully.',
         ], Response::HTTP_OK);
     }
-    public function sort(Request $request)
-    {
-        $projectIds = $request->input('project_ids');
-        
-        foreach ($projectIds as $position => $id) {
-            Project::where('id', $id)->update(['position' => $position]);
-        }
 
-        return response()->json(['success' => true]);
-    }
     public function show($id)
     {
-        $project = \App\Models\Project::findOrFail($id);
+        $project = Project::findOrFail($id);
         return view('projects.show', compact('project'));
     }
 }

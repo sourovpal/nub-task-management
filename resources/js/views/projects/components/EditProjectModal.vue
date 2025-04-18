@@ -1,24 +1,30 @@
 <script setup>
-import { ref, computed } from "vue";
-const validationErrors = ref({});
+import { ref, computed, onMounted } from "vue";
 import Http from "@services";
 import toast from "vue3-hot-toast";
 import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
 const { headers, projectsData } = storeToRefs(projectStore);
+const validationErrors = ref({});
+
+const props = defineProps({
+  edit: Object,
+});
 
 const attributes = ref({
+  id: null,
   title: "",
   description: "",
   start_date: "",
   due_date: "",
   users: [],
 });
+
 const isLoading = ref(false);
-function handleProjectCreate() {
+function handleProjectUpdate() {
   isLoading.value = true;
   Http.project
-    .create(attributes.value)
+    .update(attributes.value, attributes.value)
     .then(({ message }) => {
       toast.success(message);
       projectStore.handleFetchProjects();
@@ -30,6 +36,10 @@ function handleProjectCreate() {
       isLoading.value = false;
     });
 }
+
+onMounted(() => {
+  attributes.value = props.edit;
+});
 </script>
 
 <template>
@@ -143,9 +153,9 @@ function handleProjectCreate() {
           <Button
             icon="pi pi-save"
             :loading="isLoading"
-            label="Save Change"
+            label="Update"
             :disabled="!attributes['title']"
-            @click="handleProjectCreate"
+            @click="handleProjectUpdate"
           />
         </div>
       </div>

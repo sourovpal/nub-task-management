@@ -42,6 +42,11 @@ export function formatTimeAgo(date: string, show_date: Number) {
     return inputDate.format("YYYY-MM-DD HH:mm");
 }
 
+export function dateTimeFormate(date: string, format = "YYYY-MM-DD HH:mm") {
+    const time = moment(date);
+    return time.format(format);
+}
+
 export function formatToast(
     alert: { type: string; message: string } | null = null,
     duration: Number | null = null,
