@@ -6,7 +6,7 @@ import SidebarMenus from "./SidebarMenus.vue";
 <template>
   <section
     id="right-sidebar-nav"
-    class="px-4 min-w-[18rem] w-[18rem] border-r border-gray-200 h-screen sticky top-0 bg-white"
+    class="px-4 min-w-[18rem] w-[18rem] border-r border-gray-300 h-screen sticky top-0 bg-white"
   >
 
     <sidebar-brand />

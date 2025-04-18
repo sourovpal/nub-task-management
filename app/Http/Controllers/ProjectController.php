@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProjectCreateRequest;
 use App\Models\Project;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Http\Response;
 
 class ProjectController extends BaseController
 {
@@ -17,79 +13,70 @@ class ProjectController extends BaseController
         parent::__construct();
     }
 
-
     public function index(Request $request)
     {
+        $limit = $request->input('limit', 25);
 
-        $limit = $request->get('limit', 30);
-        $type = $request->get('type', 'recent');
+        $search = $request->input('search', '');
 
-        $projects = Project::query()
-            ->with('owner')
-            ->when(
-                $type == 'recent',
-                function ($query) {
-                    $query->orderBy('updated_at', 'DESC');
-                },
-                function ($query) use ($type) {
-
-                    $category = (object) collect((array) config('projectcategories'))->firstWhere('name', $type);
-
-                    $query->when($category, function ($query) use ($type) {
-
-                        $query->where('categorie', $type)->orderBy('updated_at', 'DESC');
-                    });
-                }
-            )->paginate($limit);
+        $projects = Project::orderBy('position', 'asc')->paginate($limit);
 
         return response()->json([
-            'projects' => $projects->items(),
-            'pagination'  => pagination($projects),
+            'data' => $projects->items(),
+            'pagination' => pagination($projects),
         ]);
     }
 
-
-    public function create(ProjectCreateRequest $request)
+    public function store(Request $request)
     {
-        $category = (object) collect((array) config('projectcategories'))->firstWhere('name', $request->categorie);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:projects',
+            'description' => 'nullable|string',
+        ]);
 
-        $attributes = array_merge(
-            $request->validated(),
-            [
-                'allow_checked' => $category->allow_checked,
-                'slug'          => Str::slug($request->name),
-                'catetorie'     => $category->name,
-                'owner_id'      => $this->user->id ?? 1,
-            ]
-        );
-
-        Project::create($attributes);
+        Project::create($request->all());
 
         return response()->json([
-            'type'    => 'success',
             'message' => 'Project created successfully.',
-            'visible' => 'toast'
-        ]);
+        ], Response::HTTP_CREATED);
     }
-
-    public function screenshot(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        if ($request->hasFile('screenshot')) {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-            $file = $request->file('screenshot');
+        $project = Project::findOrFail($id);
+        $project->update($request->all());
 
-            $randomName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        return response()->json([
+            'message' => 'Project updated successfully.',
+        ], Response::HTTP_OK);
+    }
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
 
-            $filePath = $file->storeAs('uploads', $randomName, 'public');
-
-            DB::table('projects')->where('id', $project->id)->update([
-                'screenshort' => $filePath,
-            ]);
-
-            return response()->json([
-                'message' => 'File uploaded and updated successfully!',
-                'file_name' => $randomName,
-            ]);
+        return response()->json([
+            'message' => 'Project updated successfully.',
+        ], Response::HTTP_OK);
+    }
+    public function sort(Request $request)
+    {
+        $projectIds = $request->input('project_ids');
+        
+        foreach ($projectIds as $position => $id) {
+            Project::where('id', $id)->update(['position' => $position]);
         }
+
+        return response()->json(['success' => true]);
+    }
+    public function show($id)
+    {
+        $project = \App\Models\Project::findOrFail($id);
+        return view('projects.show', compact('project'));
     }
 }

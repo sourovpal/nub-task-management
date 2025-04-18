@@ -7,6 +7,7 @@ import { formatTimeAgo } from "@helpers";
 import { Menu } from "primevue";
 import UserUpdateOrCreate from "./UserUpdateOrCreate.vue";
 
+
 interface Header {
   id: string;
   label: string;
@@ -82,7 +83,7 @@ const toggleMenu = (event: Event, row: {}) => {
   />
 
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="users">
+    <data-tree :headers="headers" :rows="users.data" :loading="users.loading">
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>
@@ -97,7 +98,7 @@ const toggleMenu = (event: Event, row: {}) => {
       </template>
       <template #td-avatar>
         <img
-          src="https://via.placeholder.com/200x200"
+          src="https://www.ratio-electric.com/media/products/notfound.png"
           class="rounded-full size-[2.5rem]"
           alt=""
         />

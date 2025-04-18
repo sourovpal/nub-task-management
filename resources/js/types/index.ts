@@ -1,5 +1,5 @@
 export interface HttpRequest {
-    [key: string]: string | number;
+    [key: string]: string | number | undefined | null;
 }
 
 export interface Pagination {

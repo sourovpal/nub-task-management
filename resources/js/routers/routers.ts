@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
-import { isAuthorized } from "@helpers";
+import { checkAuthenticated, checkUnAuthenticated } from "@stores/auth";
+import { usePush } from ".";
 
 function checkPermissions() {
     return !0;
@@ -10,27 +11,31 @@ const routes: Array<RouteRecordRaw> = [
         name: "login",
         path: "/login",
         component: () => import("@views/auth/LoginPage.vue"),
+        beforeEnter: () => checkUnAuthenticated("/"),
     },
     {
         name: "register",
         path: "/register",
         component: () => import("@views/auth/RegisterPage.vue"),
+        beforeEnter: () => checkUnAuthenticated("/"),
     },
     {
         name: "forgot",
         path: "/forgot",
         component: () => import("@views/auth/ForgotPage.vue"),
+        beforeEnter: () => checkUnAuthenticated("/"),
     },
     {
         name: "reset",
         path: "/reset",
         component: () => import("@views/auth/ResetPage.vue"),
+        beforeEnter: () => checkUnAuthenticated("/"),
     },
     {
         name: "root",
         path: "/",
         component: () => import("@components/layouts/MasterPage.vue"),
-        // beforeEnter: () => isAuthorized(),
+        beforeEnter: () => checkAuthenticated("/login"),
         children: [
             {
                 name: "dashboard-index-page",
@@ -39,52 +44,22 @@ const routes: Array<RouteRecordRaw> = [
                 beforeEnter: () => checkPermissions(),
             },
             {
-                name: "projects-index-page",
+                name: "project-index-page",
                 path: "/projects",
-                component: () => import("@views/project/ProjectIndexPage.vue"),
+                component: () => import("@views/projects/ProjectIndexPage.vue"),
                 beforeEnter: () => checkPermissions(),
             },
             {
-                name: "tasks-index-page",
-                path: "/tasks",
-                component: () => import("@views/task/TaskIndexPage.vue"),
+                name: "board-index-page",
+                path: "/projects/:id/board",
+                component: () => import("@views/board/BoardIndexPage.vue"),
                 beforeEnter: () => checkPermissions(),
-                children: [
-                    {
-                        name: "kanban-page",
-                        path: "/tasks/kanban/:id",
-                        component: () =>
-                            import("@views/task/kanban/KanbanPage.vue"),
-                        beforeEnter: () => checkPermissions(),
-                    },
-                    {
-                        name: "calculate-page",
-                        path: "/tasks/calculate/:id",
-                        component: () =>
-                            import("@views/task/calculate/CalculatePage.vue"),
-                        beforeEnter: () => checkPermissions(),
-                    },
-                    {
-                        name: "notes-index-page",
-                        path: "/tasks/notes/:id",
-                        component: () =>
-                            import("@views/task/sections/NotesPage.vue"),
-                        beforeEnter: () => checkPermissions(),
-                    },
-                ],
             },
             {
                 name: "schedulers-index-page",
                 path: "/schedulers",
                 component: () =>
                     import("@views/scheduler/SchedulerIndexPage.vue"),
-                beforeEnter: () => checkPermissions(),
-            },
-            {
-                name: "reports-index-page",
-                path: "/reports",
-                component: () =>
-                    import("@views/report/ReportIndexPage.vue"),
                 beforeEnter: () => checkPermissions(),
             },
             {

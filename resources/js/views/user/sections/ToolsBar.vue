@@ -6,7 +6,7 @@ import { userStore } from "@stores";
 
 const is_open = ref<Boolean>(false);
 
-const { pagination, is_fatching } = storeToRefs(userStore);
+const { users, is_fatching } = storeToRefs(userStore);
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { pagination, is_fatching } = storeToRefs(userStore);
       <form-checkbox class="me-3" />
 
       <refresh-button
-        :loading="is_fatching"
+        :loading="users.loading"
         @click="userStore.handleFetchUser()"
       />
     </div>
@@ -27,7 +27,7 @@ const { pagination, is_fatching } = storeToRefs(userStore);
       </primary-button>
 
       <data-pagination
-        :pagination="pagination"
+        :pagination="users.pagination"
         @change="userStore.handleFetchUser"
       />
     </div>

@@ -4,25 +4,35 @@ import Http from "@services";
 import { Pagination } from "@types";
 import router, { usePush } from "@routers";
 
+interface Departments {
+    limit: Number;
+    loading: Boolean;
+    data: Array<object>;
+    pagination: Pagination;
+}
+
 export const useDepartmentStore = defineStore("department", () => {
     const is_fatching = ref<Boolean>(false);
 
-    const pagination = reactive<Pagination>({
-        from: 0,
-        to: 0,
-        current_page: null,
-        next_page: null,
-        prev_page: null,
-        last_page: null,
-        total: 0,
+    const departments = reactive<Departments>({
+        limit: 20,
+        loading: false,
+        data: [],
+        pagination: {
+            from: 0,
+            to: 0,
+            current_page: null,
+            next_page: null,
+            prev_page: null,
+            last_page: null,
+            total: 0,
+        },
     });
-
-    const departments = reactive([]);
 
     function handleFetchDepartment(
         payload: { limit?: Number; page?: Number } = {}
     ) {
-        is_fatching.value = true;
+        departments.loading = true;
 
         const query = router.currentRoute.value.query;
 
@@ -40,20 +50,20 @@ export const useDepartmentStore = defineStore("department", () => {
 
         Http.department
             .all(payload)
-            .then(({ data }) => {
-                Object.assign(pagination, data.pagination);
-                Object.assign(departments, data.departments);
+            .then(({ data, pagination }: { data: Array<object> }) => {
+                departments.data = data;
+                departments.pagination = pagination;
             })
             .catch((error: Error) => {})
             .finally(() => {
-                is_fatching.value = false;
+                departments.loading = false;
             });
     }
 
     function handleFetchDepartmentList() {
         is_fatching.value = true;
         Http.department
-            .list()
+            .list({})
             .then(({ data }) => {
                 Object.assign(departments, data);
             })
@@ -65,7 +75,6 @@ export const useDepartmentStore = defineStore("department", () => {
 
     return {
         is_fatching,
-        pagination,
         departments,
         handleFetchDepartment,
         handleFetchDepartmentList,

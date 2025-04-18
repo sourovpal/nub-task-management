@@ -5,7 +5,7 @@ import { departmentStore } from "@stores";
 import DepartmentUpdateOrCreateModal from "./DepartmentUpdateOrCreateModal.vue";
 
 const is_open = ref(false);
-const { pagination, is_fatching } = storeToRefs(departmentStore);
+const { departments } = storeToRefs(departmentStore);
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { pagination, is_fatching } = storeToRefs(departmentStore);
       <form-checkbox class="me-3" />
 
       <refresh-button
-        :loading="is_fatching"
+        :loading="departments.loading"
         @click="departmentStore.handleFetchDepartment()"
       />
     </div>
@@ -30,7 +30,7 @@ const { pagination, is_fatching } = storeToRefs(departmentStore);
         Add New
       </primary-button>
       <data-pagination
-        :pagination="pagination"
+        :pagination="departments.pagination"
         @change="departmentStore.handleFetchDepartment"
       />
     </div>

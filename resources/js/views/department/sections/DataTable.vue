@@ -15,7 +15,7 @@ interface Header {
   width: string;
 }
 
-const { is_fetching, departments } = storeToRefs(departmentStore);
+const { departments } = storeToRefs(departmentStore);
 
 const headers = ref<Header[]>([
   { id: "checkbox", label: "", width: "2rem" },
@@ -66,7 +66,7 @@ const toggleMenu = (event: Event, row: {}) => {
   />
 
   <section-scroll-bar>
-    <data-tree :headers="headers" :rows="departments">
+    <data-tree :headers="headers" :rows="departments.data">
       <template #td-checkbox>
         <form-checkbox :checked="false" />
       </template>

@@ -23,7 +23,7 @@ class DepartmentController extends BaseController
             ->paginate($limit);
 
         return response()->json([
-            'departments' => $departments->items(),
+            'data' => $departments->items(),
             'pagination'  => pagination($departments),
         ]);
     }

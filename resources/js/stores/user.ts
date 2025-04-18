@@ -3,59 +3,89 @@ import { reactive, ref } from "vue";
 import Http from "@services";
 import { Pagination } from "@types";
 import router, { usePush } from "@routers";
+import { AxiosResponse } from "axios";
 
+// Structure for Users state
+interface Users {
+    limit: number;
+    loading: boolean;
+    data: object[];
+    pagination: Pagination;
+}
+
+// Structure of fetch payload
+interface FetchPayload {
+    limit?: number;
+    page?: number;
+}
+
+// Define the shape of the API response
+interface UserResponse {
+    data: [];
+    pagination: Pagination;
+}
+
+// The Pinia store
 export const useUserStore = defineStore("user", () => {
-    const is_fatching = ref<Boolean>(false);
+    const is_fatching = ref<boolean>(false);
 
-    const pagination = reactive<Pagination>({
-        from: 0,
-        to: 0,
-        current_page: null,
-        next_page: null,
-        prev_page: null,
-        last_page: null,
-        total: 0,
+    const users = reactive<Users>({
+        limit: 20,
+        data: [],
+        loading: false,
+        pagination: {
+            from: 0,
+            to: 0,
+            current_page: null,
+            next_page: null,
+            prev_page: null,
+            last_page: null,
+            total: 0,
+        },
     });
 
-    const users = reactive([]);
-
-    function handleFetchUser(payload: { limit?: Number; page?: Number } = {}) {
-        is_fatching.value = true;
+    function handleFetchUser(payload: FetchPayload = {}) {
+        users.loading = true;
 
         const query = router.currentRoute.value.query;
 
-        if (!payload["page"] && query["page"]) {
-            payload["page"] = query["page"];
-        } else if (!payload["page"]) {
-            payload["page"] = 1;
+        if (!payload.page && query.page) {
+            payload.page = Number(query.page);
+        } else if (!payload.page) {
+            payload.page = 1;
         }
 
         usePush({ name: "users-index-page", query: payload });
-
         payload = { ...query, ...payload };
 
-        if (!payload["limit"]) payload["limit"] = 20;
+        if (!payload.limit) payload.limit = 20;
 
         Http.user
             .all(payload)
-            .then(({ data }) => {
-                Object.assign(pagination, data.pagination);
-                Object.assign(users, data.users);
+            .then((response: AxiosResponse<UserResponse>) => {
+                users.data = response.data;
+                users.pagination = response.pagination;
             })
-            .catch((error: Error) => {})
+            .catch((error: Error) => {
+                console.error("Error fetching users:", error);
+            })
             .finally(() => {
-                is_fatching.value = false;
+                users.loading = false;
             });
     }
 
     function handleFetchUserList() {
         is_fatching.value = true;
+
         Http.department
             .list()
-            .then(({ data }) => {
-                Object.assign(users, data);
+            .then(({ users: userList }: { users: User[] }) => {
+                // Assigning fetched users to the reactive users.data
+                users.data = userList;
             })
-            .catch((error: Error) => {})
+            .catch((error: Error) => {
+                console.error("Error fetching user list:", error);
+            })
             .finally(() => {
                 is_fatching.value = false;
             });
@@ -63,7 +93,6 @@ export const useUserStore = defineStore("user", () => {
 
     return {
         is_fatching,
-        pagination,
         users,
         handleFetchUser,
         handleFetchUserList,

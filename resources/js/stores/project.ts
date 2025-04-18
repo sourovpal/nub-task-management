@@ -7,71 +7,84 @@ import { Pagination } from "@types";
 import router, { usePush } from "@routers";
 
 export const useProjectStore = defineStore("project", () => {
-    const is_fatching = ref<Boolean>(false);
-
-    const projects = ref([]);
-    const page = ref<Number>(1);
-    const screenshot = ref<Object | null>(null);
-
-    function handleFetchProject(payload: { type?: String } = {}) {
-        is_fatching.value = true;
-
-        if (!payload["type"]) payload["type"] = "recent";
-
-        Http.project
-            .all(payload)
-            .then((res: { data: object }) => {
-                const { projects: _projects, pagination } = res.data;
-                projects.value = _projects;
-            })
-            .catch((error: Error) => {})
-            .finally(() => {
-                is_fatching.value = false;
-            });
-    }
-
-    const captureScreenshot = async () => {
-        console.log(screenshot.value);
-
-        const captureArea = document.getElementById("captureArea");
-
-        if (!captureArea) return;
-
-        const canvas = await html2canvas(captureArea);
-
-        screenshot.value = await dataURLToFile(
-            canvas.toDataURL("image/png"),
-            "project.png"
-        );
-    };
-
-    function uploadScreenshort(id: Number) {
-        if (!screenshot.value) return;
-
-        const form_data = new FormData();
-
-        form_data.append("screenshot", screenshot.value);
-
-        Http.project
-            .screenshot(
-                form_data,
-                { id },
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            )
-            .then((res: { data: object }) => {})
-            .catch((error: Error) => {})
-            .finally(() => {});
-    }
+    const headers = ref([
+        {
+            unique_id: "checkbox",
+            label: "",
+            style: {
+                width: "6rem",
+                "max-width": "6rem",
+            },
+            item(row) {
+                return "";
+            },
+        },
+        {
+            unique_id: "title",
+            label: "Title",
+            style: {
+                width: "8rem",
+            },
+            item(row) {
+                return row.title;
+            },
+            sorted: "title",
+        },
+        {
+            unique_id: "start-date",
+            label: "Start Date",
+            style: {
+                width: "10rem",
+                "max-width": "10rem",
+            },
+            item(row) {
+                return row.start_date;
+            },
+        },
+        {
+            unique_id: "due-date",
+            label: "Due Date",
+            style: {
+                width: "10rem",
+                "max-width": "10rem",
+            },
+            item(row) {
+                return row.due_date;
+            },
+        },
+        {
+            unique_id: "assignee",
+            label: "Assignee",
+            style: {
+                width: "20rem",
+                "max-width": "20rem",
+            },
+        },
+        {
+            unique_id: "created-date",
+            label: "Created Date",
+            style: {
+                width: "10rem",
+                "max-width": "10rem",
+            },
+            item(row) {
+                return row.created_at;
+            },
+        },
+        {
+            unique_id: "action",
+            label: "",
+            style: {
+                width: "6rem",
+                "max-width": "6rem",
+            },
+            item(row) {
+                return row.created_at;
+            },
+        },
+    ]);
 
     return {
-        is_fatching,
-        projects,
-        handleFetchProject,
-        captureScreenshot,
-        uploadScreenshort,
+        headers,
     };
 });

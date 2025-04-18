@@ -25,12 +25,37 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-    (response) => response,
+    (response: any) => response.data,
     function (error) {
         if (error?.status === 401) authStore.logout();
-        else return Promise.reject(error);
+        else return Promise.reject(handleError(error));
     }
 );
+
+function handleError(error: any) {
+    const payload = {
+        name: error.name,
+        data: null,
+        errors: null,
+        alert: null,
+        message: error.message,
+        request: error.request,
+        headers: error.response?.headers,
+        status: error.status,
+    };
+
+    if (error.status == 422) payload["errors"] = error.response?.data ?? null;
+    else if (error.status == 429)
+        payload["alert"] = error.response?.data ?? null;
+    else payload["data"] = error.response?.data ?? null;
+
+    if (useEnv("app_env") != "local")
+        payload["message"] = "Oops! Something went wrong.";
+    else if (error.response?.data && error.response?.data?.message)
+        payload["message"] = error.response?.data.message;
+
+    return payload;
+}
 
 export default class Client {
     static async get(url: string, params?: object) {

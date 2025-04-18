@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <section class="sticky top-0 h-[4rem] border-b border-gray-200 bg-white">
-
+  <section class="sticky top-0 h-[3rem] border-b border-b-gray-300 bg-white">
+    
   </section>
 </template>

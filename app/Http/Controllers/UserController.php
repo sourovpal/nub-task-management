@@ -25,7 +25,7 @@ class UserController extends BaseController
             ->paginate($limit);
 
         return response()->json([
-            'users' => $users->items(),
+            'data' => $users->items(),
             'pagination' => pagination($users)
         ]);
     }

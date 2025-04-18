@@ -13,12 +13,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <FormLabel v-if="label">{{label}}</FormLabel>
-  <InputText
+  <FormLabel v-if="label">{{ label }}</FormLabel>
+  <Textarea
     @focus="delete errors[errorName]"
     v-bind="$attrs"
     class="w-full"
-  ></InputText>
+  ></Textarea>
   <span
     v-if="errorName && errors[errorName] && errors[errorName].length"
     class="block text-red-600 py-2 text-sm"

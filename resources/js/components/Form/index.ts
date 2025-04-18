@@ -3,6 +3,7 @@ import FormLabel from "./FormLabel.vue";
 import FormIconField from "./FormIconField.vue";
 import FormCheckbox from "./FormCheckbox.vue";
 import FormSelect from "./FormSelect.vue";
+import FormTextarea from "./FormTextarea.vue";
 
 export default {
     FormLabel,
@@ -10,4 +11,5 @@ export default {
     FormIconField,
     FormCheckbox,
     FormSelect,
+    FormTextarea
 };
