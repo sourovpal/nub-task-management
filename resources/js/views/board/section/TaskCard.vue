@@ -1,15 +1,21 @@
 <script setup>
 import { formatTimeAgo } from "@helpers";
+import AddNewTaskModal from "../modals/AddNewTaskModal.vue";
+import { ref } from "vue";
 
 const props = defineProps({
   task: Object,
+  stage: Object,
 });
 
 const emits = defineEmits(["fetch"]);
+const is_open = ref(false);
 </script>
 
 <template>
+  <AddNewTaskModal v-if="is_open" v-model:visible="is_open" :task="task" :stage="stage" />
   <div
+    @click="is_open = true"
     class="flex flex-col bg-white border border-gray-300 shadow-2xs rounded-md dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 mb-4"
   >
     <div class="p-2">

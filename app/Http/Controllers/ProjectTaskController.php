@@ -20,6 +20,8 @@ class ProjectTaskController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status_id' => 'required|integer|exists:project_statuses,id',
+            'priority' => 'nullable',
+            'due_date' => 'nullable',
         ]);
 
         $task = ProjectTask::create($payload);
@@ -44,6 +46,8 @@ class ProjectTaskController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'status_id' => 'required|integer|exists:project_statuses,id',
+            'priority' => 'nullable',
+            'due_date' => 'nullable',
         ]);
 
         $task = ProjectTask::where('id', $id)->update($payload);

@@ -44,7 +44,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <AddNewTaskModal v-if="is_open" v-model:visible="is_open" @fetch="handleFetchTasks" :stage="stage" />
+  <AddNewTaskModal
+    v-if="is_open"
+    v-model:visible="is_open"
+    @fetch="handleFetchTasks"
+    :stage="stage"
+  />
   <div class="min-w-[16rem] mt-6">
     <header class="grid grid-flow-col grid-cols-6 items-center mx-2.5 mb-3">
       <div class="col-span-5">
@@ -68,7 +73,7 @@ onMounted(() => {
     <custom-scroll style="height: 83vh">
       <div class="px-2.5">
         <template v-for="(item, index) in tasks" :key="index">
-          <TaskCard :task="item" @fetch="handleFetchTasks" />
+          <TaskCard :task="item" :stage="stage" @fetch="handleFetchTasks" />
         </template>
       </div>
     </custom-scroll>

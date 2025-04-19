@@ -23,7 +23,9 @@ export default {
 
     statusAll: (query: HttpRequest) => Client.get("/status?id=" + query.id),
     createStatus: (payload: HttpRequest) => Client.post("/status", payload),
-    
-    tasksAll:(query: HttpRequest) => Client.get("/tasks?id=" + query.id),
+
+    tasksAll: (query: HttpRequest) => Client.get("/tasks?id=" + query.id),
     createTask: (payload: HttpRequest) => Client.post("/tasks", payload),
+    updateTask: (payload: HttpRequest, params: HttpRequest) =>
+        Client.put("/tasks/" + params.id, payload),
 };

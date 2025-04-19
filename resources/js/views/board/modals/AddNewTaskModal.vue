@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 const validationErrors = ref({});
 import Http from "@services";
 import toast from "vue3-hot-toast";
@@ -7,6 +7,7 @@ import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
 const props = defineProps({
   stage: Object,
+  task: { type: Object, default: null },
 });
 const emits = defineEmits(["fetch"]);
 const attributes = ref({
@@ -14,13 +15,15 @@ const attributes = ref({
   description: "",
   priority: "low",
   due_date: "",
+  status_id: null,
 });
+const { projectStages } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 function handleTaskCreate() {
   isLoading.value = true;
   Http.project
-    .createTask({ ...attributes.value, status_id: props.stage.id })
+    .updateTask(attributes.value, { id: attributes.value.id })
     .then(({ message }) => {
       toast.success(message);
       emits("fetch", true);
@@ -32,6 +35,10 @@ function handleTaskCreate() {
       isLoading.value = false;
     });
 }
+onMounted(() => {
+  attributes.value = props.task;
+  attributes.value.status_id = props.stage.id;
+});
 </script>
 
 <template>
@@ -66,7 +73,7 @@ function handleTaskCreate() {
           <form-label>Description</form-label>
           <QuillEditor
             theme="snow"
-            style="height: 160px"
+            style="height: 223px"
             :content="attributes['description']"
             @update:content="attributes['description'] = $event"
             contentType="html"
@@ -146,6 +153,18 @@ function handleTaskCreate() {
             </div>
           </div>
           <div class="col-span-2">
+            <form-label>Status</form-label>
+            <form-select
+              :options="projectStages"
+              error-name="due_date"
+              type="date"
+              v-model="attributes['status_id']"
+              optionLabel="name"
+              optionValue="id"
+              :errors="validationErrors"
+            />
+          </div>
+          <div class="col-span-2">
             <form-input
               label="Due Date"
               error-name="due_date"
@@ -156,12 +175,12 @@ function handleTaskCreate() {
           </div>
         </div>
 
-        <div class="flex flex-row justify-between mt-6">
+        <div class="flex flex-row justify-between mt-6 pb-4">
           <Button icon="pi pi-refresh" severity="danger" label="Reset" />
           <Button
             icon="pi pi-save"
             :loading="isLoading"
-            label="Save Change"
+            :label="`${task ? 'Update' : 'Save Change'}`"
             :disabled="!attributes['name']"
             @click="handleTaskCreate"
           />
