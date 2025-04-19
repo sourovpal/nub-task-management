@@ -1,22 +1,16 @@
-<script setup lang="ts">
+<script setup>
 import { Dialog } from "primevue";
 import { useToast } from "primevue/usetoast";
-import { onMounted, PropType, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Http from "@services";
 import { departmentStore, userStore } from "@stores";
 import { formatToast } from "@helpers";
 import { storeToRefs } from "pinia";
+import toast from "vue3-hot-toast";
 
 const props = defineProps({
   edit: {
-    type: Object as PropType<{
-      id: Number;
-      first_name: String;
-      last_name: String;
-      email: String;
-      password: String;
-      department: Number | null;
-    } | null>,
+    type: { type: [null, Object] },
     default: null,
   },
 });
@@ -24,17 +18,7 @@ const props = defineProps({
 const { departments, is_fatching: is_fatching_department } =
   storeToRefs(departmentStore);
 
-const toast = useToast();
-
-const attributes = reactive<{
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  department: Object | null;
-  join_date: String | null;
-  role: Object | null;
-}>({
+const attributes = reactive({
   first_name: "",
   last_name: "",
   email: "",
@@ -44,9 +28,9 @@ const attributes = reactive<{
   role: null,
 });
 
-let errors = ref({});
+let validationErrors = ref({});
 
-const is_loading = ref<Boolean>(false);
+const is_loading = ref(false);
 
 function handleUpdateOrCreate() {
   is_loading.value = true;
@@ -63,14 +47,10 @@ function handleUpdateOrCreate() {
     .then(({ data }) => {
       userStore.handleFetchUser();
 
-      toast.add(formatToast(data));
+      toast.success("User successfully created.");
     })
-    .catch((error: Error) => {
-      const { errors: v_errors, alert } = Http.error(error);
-
-      errors.value = v_errors;
-
-      if (!v_errors) toast.add(formatToast(alert));
+    .catch(({ errors }) => {
+      validationErrors.value = errors;
     })
     .finally(() => (is_loading.value = false));
 }
@@ -95,7 +75,7 @@ onMounted(() => {
           v-model="attributes.first_name"
           class="w-full"
           autocomplete="off"
-          :errors="errors"
+          :errors="validationErrors"
           error-name="first_name"
         />
       </div>
@@ -107,7 +87,7 @@ onMounted(() => {
           v-model="attributes.last_name"
           class="w-full"
           autocomplete="off"
-          :errors="errors"
+          :errors="validationErrors"
           error-name="last_name"
         />
       </div>
@@ -120,7 +100,7 @@ onMounted(() => {
         v-model="attributes.email"
         class="w-full"
         autocomplete="off"
-        :errors="errors"
+        :errors="validationErrors"
         error-name="email"
       />
     </div>
@@ -134,10 +114,10 @@ onMounted(() => {
           :loading="is_fatching_department"
           :disabled="is_fatching_department"
           v-model="attributes.department"
-          :options="departments"
+          :options="departments.data"
           optionLabel="name"
           class="w-full"
-          :errors="errors"
+          :errors="validationErrors"
           error-name="department"
         />
       </div>
@@ -149,7 +129,7 @@ onMounted(() => {
           v-model="attributes.role"
           class="w-full"
           autocomplete="off"
-          :errors="errors"
+          :errors="validationErrors"
           error-name="password"
         />
       </div>
@@ -162,8 +142,9 @@ onMounted(() => {
         v-model="attributes.join_date"
         class="w-full"
         autocomplete="off"
-        :errors="errors"
+        :errors="validationErrors"
         error-name="password"
+        type="date"
       />
     </div>
 
@@ -174,7 +155,7 @@ onMounted(() => {
         v-model="attributes.password"
         class="w-full"
         autocomplete="off"
-        :errors="errors"
+        :errors="validationErrors"
         error-name="password"
       />
     </div>

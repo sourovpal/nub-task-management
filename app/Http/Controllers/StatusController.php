@@ -15,7 +15,7 @@ class StatusController extends BaseController
 
     public function index(Request $request)
     {
-        $statuses = ProjectStatus::where('project_id', $request->id)->orderBy('id', 'ASC')->get();
+        $statuses = ProjectStatus::with('groupTasks')->where('project_id', $request->id)->orderBy('id', 'ASC')->get();
         return response()->json($statuses);
     }
 

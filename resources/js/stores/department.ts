@@ -64,8 +64,8 @@ export const useDepartmentStore = defineStore("department", () => {
         is_fatching.value = true;
         Http.department
             .list({})
-            .then(({ data }) => {
-                Object.assign(departments, data);
+            .then((data) => {
+                departments.data = data;
             })
             .catch((error: Error) => {})
             .finally(() => {

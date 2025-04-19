@@ -28,4 +28,6 @@ export default {
     createTask: (payload: HttpRequest) => Client.post("/tasks", payload),
     updateTask: (payload: HttpRequest, params: HttpRequest) =>
         Client.put("/tasks/" + params.id, payload),
+    taskPositionUpdate: (payload: HttpRequest) =>
+        Client.post("/tasks/position", payload),
 };

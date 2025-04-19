@@ -13,17 +13,10 @@ const is_open = ref(false);
 </script>
 
 <template>
-  <AddNewTaskModal
-    v-if="is_open"
-    v-model:visible="is_open"
-    :task="task"
-    :stage="stage"
-  />
+  <AddNewTaskModal v-if="is_open" v-model:visible="is_open" :task="task" :stage="stage" />
   <div
     @click="is_open = true"
     class="flex flex-col bg-white border border-gray-300 shadow-2xs rounded-md dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 mb-4"
-    :data-attr_stage_id="stage.id"
-    :data-attr_task_id="task.id"
   >
     <div class="p-2">
       <h3 class="text-sm font-semibold text-gray-600 dark:text-white">
@@ -39,17 +32,16 @@ const is_open = ref(false);
           <label
             for="hs-checkbox-group-2"
             class="text-xs text-gray-500 ms-2 dark:text-neutral-400"
+            >KAN-12</label
           >
-            KAN-{{ task.sl_id }}
-          </label>
         </div>
         <div class="col-span-4">
           <AvatarGroup>
             <Avatar
-              image="https://static.vecteezy.com/system/resources/thumbnails/019/495/015/small/business-man-boy-avatar-user-person-people-beard-glasses-flat-style-vector.jpg"
+              image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
               shape="circle"
               size="small"
-              class="ml-auto border-gray-200 !border"
+              class="ml-auto"
             />
             <!-- <Avatar label="+2" shape="circle" size="small" /> -->
           </AvatarGroup>

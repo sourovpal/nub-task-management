@@ -75,6 +75,7 @@ Route::prefix('v1')->group(function () {
         ->group(function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
+            Route::post('/position', 'updatePosition');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'delete');
         });

@@ -102,6 +102,7 @@ export const useProjectStore = defineStore("project", () => {
     });
 
     const projectStages = ref([]);
+    const targetTask = ref(null);
 
     function handleFetchProjects() {
         Http.project
@@ -133,13 +134,25 @@ export const useProjectStore = defineStore("project", () => {
             .finally(() => {});
     }
 
+    function handleUpdateTaskPosition(payload = {}) {
+        Http.project
+            .taskPositionUpdate(payload)
+            .then((response: AxiosResponse) => {
+                handleFetchStage();
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    }
+
     return {
         headers,
         projectsData,
         projectStages,
+        targetTask,
         currentProject,
         handleFindProject,
         handleFetchStage,
         handleFetchProjects,
+        handleUpdateTaskPosition,
     };
 });

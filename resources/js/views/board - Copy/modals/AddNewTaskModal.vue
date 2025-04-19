@@ -22,11 +22,9 @@ const { projectStages } = storeToRefs(projectStore);
 const isLoading = ref(false);
 function handleTaskCreate() {
   isLoading.value = true;
-  Http.project[props.task ? "updateTask" : "createTask"](attributes.value, {
-    id: attributes.value.id,
-  })
+  Http.project
+    .updateTask(attributes.value, { id: attributes.value.id })
     .then(({ message }) => {
-      projectStore.handleFetchStage();
       toast.success(message);
       emits("fetch", true);
     })
@@ -38,9 +36,7 @@ function handleTaskCreate() {
     });
 }
 onMounted(() => {
-  if (props.task) {
-    attributes.value = { ...props.task };
-  }
+  attributes.value = props.task;
   attributes.value.status_id = props.stage.id;
 });
 </script>

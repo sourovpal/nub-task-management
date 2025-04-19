@@ -24,10 +24,15 @@ class ProjectTaskController extends Controller
             'due_date' => 'nullable',
         ]);
 
+        $payload['position'] = $this->maxPosition($request->status_id) + 1;
+
+        $payload['sl_id'] = ProjectTask::where('status_id', $payload['status_id'])->count() + 1;
+
         $task = ProjectTask::create($payload);
+
         return response()->json([
             'message' => 'Task created successfully',
-        ])->setStatusCode(201);
+        ]);
     }
 
     public function show($id)
@@ -54,8 +59,78 @@ class ProjectTaskController extends Controller
 
         return response()->json([
             'message' => 'Task updated successfully',
-        ])->setStatusCode(201);
+        ]);
     }
+
+    public function maxPosition($status_id)
+    {
+        return ProjectTask::where('status_id', $status_id)->max('position');
+    }
+
+    public function updatePosition(Request $request)
+    {
+        $status_id = $request->status_id;
+        $task_id = $request->task_id;
+        $action = $request->action;
+        $position = (int) $request->position;
+        $max = $this->maxPosition($status_id);
+
+        if ($position == 1) {
+            ProjectTask::where('id', $task_id)->update(['position' => $max + 1, 'status_id' => $status_id]);
+        } else if ($action == 'swap') {
+
+            $old_position = $request->old_position;
+
+            $temp = ProjectTask::where('id', $task_id)->first();
+
+            if ($old_position > $position) {
+                // up
+                $temp->position = ($max - ($old_position - $position)) + 1;
+                $temp->save();
+            } else {
+                // down
+                $temp->position = ($max - $position) + 1;
+                $temp->save();
+            }
+            $tasks = ProjectTask::where('status_id', $status_id)
+                ->where('id', '!=', $task_id)
+                ->where('position', '>=', $temp->position)
+                ->orderBy('position', 'ASC')
+                ->get();
+
+            $start = $temp->position;
+
+            foreach ($tasks as $task) {
+                $start++;
+                $task->update(['position' => $start]);
+            }
+        } else if ($action == 'move') {
+
+            $temp = ProjectTask::where('id', $task_id)->first();
+
+
+            $temp->status_id = $status_id;
+            $temp->save();
+
+            $tasks = ProjectTask::where('status_id', $status_id)
+                ->where('id', '!=', $task_id)
+                ->where('position', '>=', $temp->position)
+                ->orderBy('position', 'ASC')
+                ->get();
+
+            $start = $temp->position;
+
+            foreach ($tasks as $task) {
+                $start++;
+                $task->update(['position' => $start]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Task position updated successfully',
+        ]);
+    }
+
 
     public function destroy($id)
     {
