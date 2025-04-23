@@ -4,6 +4,7 @@ import user from "./user";
 import department from "./department";
 import project from "./project";
 import kanban from "./kanban";
+import quotation from "./quotation";
 
 export default {
     auth,
@@ -11,5 +12,6 @@ export default {
     department,
     project,
     kanban,
+    quotation,
     error: Client.error,
 };

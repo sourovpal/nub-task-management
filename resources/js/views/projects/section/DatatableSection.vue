@@ -26,6 +26,12 @@ const menuItems = (row) => [
     },
   },
   {
+    label: "Quotation",
+    icon: "pi pi-dollar",
+    row,
+    command: ({ item }) => usePush(`/projects/${item.row.id}/quotation`),
+  },
+  {
     label: "Start Work",
     icon: "pi pi-sitemap",
     row,

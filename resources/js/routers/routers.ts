@@ -56,6 +56,12 @@ const routes: Array<RouteRecordRaw> = [
                 beforeEnter: () => checkPermissions(),
             },
             {
+                name: "quotation-index-page",
+                path: "/projects/:id/quotation",
+                component: () => import("@views/quotation/QuotationIndexPage.vue"),
+                beforeEnter: () => checkPermissions(),
+            },
+            {
                 name: "schedulers-index-page",
                 path: "/schedulers",
                 component: () =>

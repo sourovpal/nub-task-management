@@ -17,9 +17,18 @@ class ProjectController extends BaseController
     {
         $limit = $request->input('limit', 25);
 
-        $search = $request->input('search', '');
+        $search = $request->input('search', null);
 
-        $projects = Project::orderBy('id', 'DESC')->paginate($limit);
+        $projects = Project::orderBy('id', 'DESC')
+            ->when(
+                $search,
+                function ($query)
+                use ($search) {
+                    $query->where('title', 'LIKE', "%$search%")
+                        ->orWhere('description', 'LIKE', "%$search%");
+                }
+            )
+            ->paginate($limit);
 
         return response()->json($projects, Response::HTTP_OK);
     }

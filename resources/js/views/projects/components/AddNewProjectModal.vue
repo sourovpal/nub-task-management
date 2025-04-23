@@ -6,6 +6,7 @@ import toast from "vue3-hot-toast";
 import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
 const { headers, projectsData } = storeToRefs(projectStore);
+import DropdownUsers from "@components/Dropdown/DropdownUsers.vue";
 
 const attributes = ref({
   title: "",
@@ -106,14 +107,19 @@ function handleProjectCreate() {
               />
               <Avatar label="+2" shape="circle" />
             </AvatarGroup>
-            <Button
-              icon="pi pi-plus"
-              label="Add Member"
-              severity="secondary"
-              variant="outlined"
-              size="small"
-              class="ml-4"
-            />
+            <dropdown-users>
+              <template #toggler="{ toggler }">
+                <Button
+                  @click="toggler"
+                  icon="pi pi-plus"
+                  label="Add Member"
+                  severity="secondary"
+                  variant="outlined"
+                  size="small"
+                  class="ml-4"
+                />
+              </template>
+            </dropdown-users>
           </div>
         </div>
 

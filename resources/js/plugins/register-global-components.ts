@@ -23,6 +23,10 @@ import {
     Textarea,
     ScrollPanel,
     ColorPicker,
+    IconField,
+    InputIcon,
+    InputText,
+    Popover
 } from "primevue";
 
 export default function registerGlobalComponents(app: App) {
@@ -53,6 +57,10 @@ export default function registerGlobalComponents(app: App) {
     app.component("Dialog", Dialog);
     app.component("Textarea", Textarea);
     app.component("CustomScroll", CustomScroll);
+    app.component("IconField", IconField);
+    app.component("InputIcon", InputIcon);
+    app.component("InputText", InputText);
+    app.component("Popover", Popover);
 
     // Custom components
     app.component("SectionScrollBar", SectionScrollBar);

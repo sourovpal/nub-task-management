@@ -104,9 +104,9 @@ export const useProjectStore = defineStore("project", () => {
     const projectStages = ref([]);
     const targetTask = ref(null);
 
-    function handleFetchProjects() {
+    function handleFetchProjects(payload = {}) {
         Http.project
-            .all({})
+            .all(payload)
             .then((response: AxiosResponse) => {
                 projectsData.value = response;
             })
@@ -124,9 +124,9 @@ export const useProjectStore = defineStore("project", () => {
             .finally(() => {});
     }
 
-    function handleFetchStage() {
+    function handleFetchStage(payload = {}) {
         Http.project
-            .statusAll({ id: currentProject.id })
+            .statusAll({ id: currentProject.id, ...payload })
             .then((response: AxiosResponse) => {
                 projectStages.value = response;
             })

@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTaskController;
+use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -76,6 +77,15 @@ Route::prefix('v1')->group(function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
             Route::post('/position', 'updatePosition');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+
+    Route::prefix('/quotations')
+        ->controller(QuotationController::class)
+        ->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'delete');
         });

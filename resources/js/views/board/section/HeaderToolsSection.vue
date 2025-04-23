@@ -6,6 +6,11 @@ import AddNewStageModal from "../modals/AddNewStageModal.vue";
 
 const { currentProject } = storeToRefs(projectStore);
 const is_open = ref(false);
+
+function handleSearch(event) {
+  console.log(event.target.value);
+  projectStore.handleFetchStage({ search: event.target.value });
+}
 </script>
 <template>
   <section
@@ -17,7 +22,17 @@ const is_open = ref(false);
         {{ currentProject.title ?? "Not added yet!" }}
       </h3>
     </div>
-    <div class="right ml-auto">
+    <div class="right flex flex-row items-center ml-auto">
+      <div class="px-4">
+        <IconField>
+          <InputText
+            size="small"
+            @input="handleSearch"
+            placeholder="Search..."
+          />
+          <InputIcon class="pi pi-search" />
+        </IconField>
+      </div>
       <AddNewStageModal v-if="is_open" v-model:visible="is_open" />
       <Button
         @click="is_open = true"
