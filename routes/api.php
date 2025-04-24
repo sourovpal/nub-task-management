@@ -79,6 +79,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/position', 'updatePosition');
             Route::put('/{id}', 'update');
             Route::delete('/{id}', 'delete');
+            Route::get('/events', 'events');
         });
 
     Route::prefix('/quotations')

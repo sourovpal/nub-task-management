@@ -103,6 +103,7 @@ export const useProjectStore = defineStore("project", () => {
 
     const projectStages = ref([]);
     const targetTask = ref(null);
+    const taskEvents = ref([]);
 
     function handleFetchProjects(payload = {}) {
         Http.project
@@ -144,6 +145,16 @@ export const useProjectStore = defineStore("project", () => {
             .finally(() => {});
     }
 
+    function handleFetchEvents() {
+        Http.project
+            .getEvents({})
+            .then((response: AxiosResponse) => {
+                taskEvents.value = response;
+            })
+            .catch((error) => {})
+            .finally(() => {});
+    }
+
     return {
         headers,
         projectsData,
@@ -154,5 +165,7 @@ export const useProjectStore = defineStore("project", () => {
         handleFetchStage,
         handleFetchProjects,
         handleUpdateTaskPosition,
+        handleFetchEvents,
+        taskEvents,
     };
 });

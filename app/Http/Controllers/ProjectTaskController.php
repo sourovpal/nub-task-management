@@ -136,4 +136,18 @@ class ProjectTaskController extends Controller
     {
         // Logic to delete a specific project task
     }
+
+    public function events(Request $request)
+    {
+        $tasks = ProjectTask::get();
+
+        $tasks->map(function ($item) {
+            $item->title = $item->name;
+            $item->start = $item->created_at;
+            $item->end   = $item->due_date;
+            return $item;
+        });
+
+        return $tasks;
+    }
 }

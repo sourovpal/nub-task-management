@@ -308,7 +308,9 @@
     </head>
     <body class="c17 doc-content">
         <p class="c11">
-            <span class="c1">Website design and development.</span>
+            <span class="c1">
+                {{ $project->title }}
+            </span>
         </p>
         <p class="c5"><span class="c1"></span></p>
         <p class="c5"><span class="c1"></span></p>
@@ -325,10 +327,14 @@
                     <p class="c16"><span class="c13 c9">Qty</span></p>
                 </td>
                 <td class="c4" colspan="1" rowspan="1">
-                    <p class="c16"><span class="c13 c9">Cost Amount</span></p>
+                    <p class="c16" style="text-align: left">
+                        <span class="c13 c9">Cost Amount</span>
+                    </p>
                 </td>
                 <td class="c6" colspan="1" rowspan="1">
-                    <p class="c16"><span class="c9 c13">Total Cost</span></p>
+                    <p class="c16" style="text-align: left">
+                        <span class="c9 c13">Total Cost</span>
+                    </p>
                 </td>
             </tr>
             @foreach($quotations as $item)
@@ -349,12 +355,12 @@
                     </p>
                 </td>
                 <td class="c4" colspan="1" rowspan="1">
-                    <p class="c7">
+                    <p class="c7" style="text-align: left">
                         <span class="c2">{{ $item->cost_amount   }} Tk</span>
                     </p>
                 </td>
                 <td class="c6" colspan="1" rowspan="1">
-                    <p class="c7">
+                    <p class="c7" style="text-align: left">
                         <span class="c2">{{ $item->total_cost }} Tk</span>
                     </p>
                 </td>
@@ -363,16 +369,13 @@
         </table>
         <p class="c5"><span class="c2"></span></p>
         <p class="c5"><span class="c2"></span></p>
-        <p class="c14">
-            <span class="c9">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
-            ><span class="c10"> Total Items: {{ $quotations->count() }} </span>
+        <p style="margin-left:30rem;">
+            <span class="c10"> Total Items: {{ $quotations->count() }} </span>
         </p>
         <p class="c14 c19"><span class="c10"></span></p>
-        <p class="c14">
+        <p style="margin-left:30rem;">
             <span class="c10">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp; Total Cost: {{ $quotations->sum('total_cost') }}
+                Total Cost: {{ $quotations->sum('total_cost') }}
             </span>
         </p>
     </body>

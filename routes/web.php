@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Project;
 use App\Models\Quotation;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -7,8 +8,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 Route::get('projects/{id}/print', function (Request $request) {
+    $project = Project::find($request->id);
     $quotations = Quotation::where('project_id', $request->id)->get();
-    $pdf = Pdf::loadView('quotation', compact('quotations'))->setPaper('a4', 'portrait');;
+    $pdf = Pdf::loadView('quotation', compact('quotations', 'project'))->setPaper('a4', 'portrait');;
     return $pdf->stream('quotation.pdf');
 });
 

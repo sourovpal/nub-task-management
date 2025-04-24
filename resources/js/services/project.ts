@@ -30,4 +30,6 @@ export default {
         Client.put("/tasks/" + params.id, payload),
     taskPositionUpdate: (payload: HttpRequest) =>
         Client.post("/tasks/position", payload),
+
+    getEvents: (query: HttpRequest) => Client.get("/tasks/events", query),
 };
