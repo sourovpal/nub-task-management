@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class QuotationController extends Controller
 {
@@ -72,5 +73,12 @@ class QuotationController extends Controller
         return response()->json([
             'message' => 'Quotation deleted successfully.',
         ], Response::HTTP_CREATED);
+    }
+
+    public function print(Request $request)
+    {
+        // $quotations = Quotation::where('project_id', $request->id)->get();
+        // $pdf = Pdf::loadView('quotation', compact('quotations'))->setPaper('a4', 'portrait');;
+        // return $pdf->stream('quotation.pdf');
     }
 }
