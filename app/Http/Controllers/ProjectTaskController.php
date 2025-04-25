@@ -141,10 +141,28 @@ class ProjectTaskController extends Controller
     {
         $tasks = ProjectTask::get();
 
-        $tasks->map(function ($item) {
+        $backgroundColors = [
+            "#000000",
+            "#df00e0",
+            "#1abc9c",
+            "#3498db",
+            "#9b59b6",
+            "#e67e22",
+            "#e74c3c",
+            "#2ecc71",
+            "#f39c12",
+            "#7f8c8d",
+        ];
+
+
+        $tasks->map(function ($item) use ($backgroundColors) {
+
+            shuffle($backgroundColors);
+
             $item->title = $item->name;
             $item->start = $item->created_at;
             $item->end   = $item->due_date;
+            $item->color = $backgroundColors[0];
             return $item;
         });
 

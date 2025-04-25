@@ -1,6 +1,7 @@
 <script setup>
 import { formatTimeAgo } from "@helpers";
 import AddNewTaskModal from "../modals/AddNewTaskModal.vue";
+import CommantBoxModal from "../modals/CommantBoxModal.vue";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -10,6 +11,7 @@ const props = defineProps({
 
 const emits = defineEmits(["fetch"]);
 const is_open = ref(false);
+const is_open_chat = ref(false);
 </script>
 
 <template>
@@ -19,8 +21,15 @@ const is_open = ref(false);
     :task="task"
     :stage="stage"
   />
+
+  <CommantBoxModal
+    v-if="is_open_chat"
+    v-model:visible="is_open_chat"
+    :task="task"
+    :stage="stage"
+  />
+
   <div
-    @click="is_open = true"
     class="flex flex-col bg-white border border-gray-300 shadow-2xs rounded-md dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 mb-4"
     :data-attr_stage_id="stage.id"
     :data-attr_task_id="task.id"
@@ -56,10 +65,22 @@ const is_open = ref(false);
         </div>
       </div>
     </div>
-    <div class="bg-gray-200 border-t border-gray-300 rounded-b-md py-1.5 px-2">
+    <div
+      class="bg-gray-200 border-t border-gray-300 rounded-b-md py-1.5 px-2 flex flex-row justify-between items-center"
+    >
       <p class="mt-1 text-sm text-gray-500 dark:text-neutral-500">
-        Last updated: {{ formatTimeAgo(task.updated_at) }}
+        Modify: {{ formatTimeAgo(task.updated_at) }}
       </p>
+      <div>
+        <i
+          @click="is_open_chat=true"
+          class="pi pi-send me-4 text-gray-500 !text-sm cursor-pointer hover:text-gray-700"
+        ></i>
+        <i
+          class="pi pi-pen-to-square text-gray-500 !text-sm cursor-pointer hover:text-gray-700"
+          @click="is_open = true"
+        ></i>
+      </div>
     </div>
   </div>
 </template>

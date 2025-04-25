@@ -3,8 +3,8 @@ import { useEnv, useStorage } from "@helpers";
 import { ref } from "vue";
 import { usePush } from "@routers";
 
-const userStore = useStorage(useEnv("user_store"));
-const tokenStore = useStorage(useEnv("token_store"));
+const userStore = useStorage(useEnv("VITE_USER_STORE"));
+const tokenStore = useStorage(useEnv("VITE_TOKEN_STORE"));
 
 export const checkAuthenticated = (path = null) => {
     const user = userStore.get();
@@ -22,10 +22,9 @@ export const checkUnAuthenticated = (path = null) => {
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref(userStore.get());
-    const token = ref(userStore.get());
+    const token = ref(tokenStore.get());
 
     function setUser(payload: object | null) {
-        console.log("payload", payload);
         if (payload) {
             user.value = payload;
             userStore.set(payload);

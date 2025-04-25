@@ -77,7 +77,7 @@ function getChildPayload(index, stage) {
 </script>
 <template>
   <AddNewTaskModal v-if="is_open" v-model:visible="is_open" :stage="stage" />
-  <div class="min-w-[16rem] mt-6">
+  <div class="min-w-[16rem] max-w-[16rem] mt-6">
     <BoardHeader :stage="stage"></BoardHeader>
     <custom-scroll style="height: 83vh">
       <div class="px-2.5">

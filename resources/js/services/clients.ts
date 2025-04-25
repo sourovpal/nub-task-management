@@ -18,7 +18,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     async function (config) {
         const { user, token } = storeToRefs(authStore);
-        if (token) config.headers.Authorization = `Bearer ${token}`;
+        if (token.value) config.headers.Authorization = `Bearer ${token.value}`;
         return config;
     },
     (error) => Promise.reject(error)

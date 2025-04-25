@@ -11,7 +11,7 @@ class BaseController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user = auth()->guard('web')->user();
+            $this->user = auth()->guard('sanctum')->user();
             return $next($request);
         });
     }
