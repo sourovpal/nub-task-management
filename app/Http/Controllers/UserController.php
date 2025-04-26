@@ -30,6 +30,15 @@ class UserController extends BaseController
         ]);
     }
 
+    public function list(Request $request)
+    {
+        $limit = $request->get('limit', 20);
+        return User::query()
+            ->with('department')
+            ->orderBy('id', 'DESC')
+            ->get();
+    }
+
     public static function find(User $user, int $id)
     {
         return response()

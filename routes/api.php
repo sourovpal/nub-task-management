@@ -35,6 +35,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         ->controller(UserController::class)
         ->group(function () {
             Route::get('/', 'index');
+            Route::get('/list', 'list');
             Route::get('/{user}', 'find');
             Route::get('/{user}/show', 'show');
             Route::post('/', 'create');
@@ -84,6 +85,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
             Route::get('/events', 'events');
             Route::get('/commants', [TaskCommantController::class, 'index']);
             Route::post('/commants', [TaskCommantController::class, 'create']);
+            Route::post('assign', 'assignUsers');
         });
 
     Route::prefix('/quotations')

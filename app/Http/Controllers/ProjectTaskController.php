@@ -168,4 +168,10 @@ class ProjectTaskController extends Controller
 
         return $tasks;
     }
+
+    public function assignUsers(Request $request)
+    {
+        $tasks = ProjectTask::where('id', $request->id)->first();
+        $tasks->users()->sync((array)$request->users);
+    }
 }

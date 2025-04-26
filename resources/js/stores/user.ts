@@ -81,8 +81,8 @@ export const useUserStore = defineStore("user", () => {
     function handleFetchUserList() {
         is_fatching.value = true;
 
-        Http.department
-            .list()
+        Http.user
+            .list({})
             .then((data) => {
                 // Assigning fetched users to the reactive users.data
                 userList.data = data;

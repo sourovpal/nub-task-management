@@ -26,7 +26,7 @@ class StatusController extends BaseController
                         ->orWhere('description', 'LIKE', "%$search%");
                 }
             );
-        }])->where('project_id', $request->id)
+        }, 'groupTasks.users'])->where('project_id', $request->id)
             ->orderBy('id', 'ASC')->get();
         return response()->json($statuses);
     }
