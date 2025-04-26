@@ -49,11 +49,11 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     function logout() {
-        user.value = null;
-        token.value = null;
         userStore.remove();
         tokenStore.remove();
-        usePush({ name: "logout" });
+        token.value = null;
+        user.value = null;
+        window.location.href = "/login";
     }
 
     return { user, token, setUser, setToken, logout };
