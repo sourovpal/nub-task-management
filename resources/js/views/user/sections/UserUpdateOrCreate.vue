@@ -105,34 +105,32 @@ onMounted(() => {
       />
     </div>
 
-    <div class="grid grid-cols-2 gap-6">
-      <div class="mb-4">
-        <form-label>Department:</form-label>
-        <form-select
-          filter
-          :filterFields="['name', 'short_name']"
-          :loading="is_fatching_department"
-          :disabled="is_fatching_department"
-          v-model="attributes.department"
-          :options="departments.data"
-          optionLabel="name"
-          class="w-full"
-          :errors="validationErrors"
-          error-name="department"
-        />
-      </div>
+    <div class="mb-4">
+      <form-label>Phone:</form-label>
 
-      <div class="mb-4">
-        <form-label>Role & Access:</form-label>
+      <form-input
+        v-model="attributes.phone"
+        class="w-full"
+        autocomplete="off"
+        :errors="validationErrors"
+        error-name="phone"
+      />
+    </div>
 
-        <form-input
-          v-model="attributes.role"
-          class="w-full"
-          autocomplete="off"
-          :errors="validationErrors"
-          error-name="password"
-        />
-      </div>
+    <div class="mb-4">
+      <form-label>Department:</form-label>
+      <form-select
+        filter
+        :filterFields="['name', 'short_name']"
+        :loading="is_fatching_department"
+        :disabled="is_fatching_department"
+        v-model="attributes.department"
+        :options="departments.data"
+        optionLabel="name"
+        class="w-full"
+        :errors="validationErrors"
+        error-name="department"
+      />
     </div>
 
     <div class="mb-4">

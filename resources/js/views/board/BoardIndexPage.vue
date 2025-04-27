@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import BoardColumn from "./section/BoardColumn.vue";
+import AddColumn from "./section/AddColumn.vue";
 import HeaderToolsSection from "./section/HeaderToolsSection.vue";
 import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
@@ -22,6 +23,7 @@ onMounted(() => {
       <template v-for="(stage, index) in projectStages" :key="index">
         <board-column :stage="stage"></board-column>
       </template>
+      <add-column></add-column>
       <div v-if="!projectStages.length" class="w-full flex justify-center items-center mt-24 opacity-40">
         <img
           class="w-[30rem]"

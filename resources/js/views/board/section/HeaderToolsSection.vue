@@ -2,14 +2,17 @@
 import { projectStore } from "@stores";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-import AddNewStageModal from "../modals/AddNewStageModal.vue";
+import DropdownUsers from "@components/Dropdown/DropdownUsers.vue";
 
 const { currentProject } = storeToRefs(projectStore);
-const is_open = ref(false);
 
 function handleSearch(event) {
-  console.log(event.target.value);
   projectStore.handleFetchStage({ search: event.target.value });
+}
+
+function handleSearchUser(users) {
+  const ids = users.map((item) => item.id);
+  projectStore.handleFetchStage({ users: ids });
 }
 </script>
 <template>
@@ -33,14 +36,22 @@ function handleSearch(event) {
           <InputIcon class="pi pi-search" />
         </IconField>
       </div>
-      <AddNewStageModal v-if="is_open" v-model:visible="is_open" />
-      <Button
-        @click="is_open = true"
-        label="Add Stage"
-        icon="pi pi-plus"
-        size="small"
-        class="!py-1 !rounded-[0.2rem]"
-      />
+
+      <div class="pr-4">
+        <dropdown-users :users="[]" @update:users="handleSearchUser">
+          <template #toggler="{ toggler }">
+            <Button
+              @click="toggler"
+              icon="pi pi-user"
+              label="Filter"
+              severity="secondary"
+              variant="outlined"
+              size="small"
+              class="ml-4"
+            />
+          </template>
+        </dropdown-users>
+      </div>
     </div>
   </section>
 </template>

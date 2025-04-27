@@ -17,17 +17,26 @@ class StatusController extends BaseController
     {
         $search = $request->input('search', null);
 
-        $statuses = ProjectStatus::with(['groupTasks' => function ($query) use ($search) {
-            $query->when(
-                $search,
-                function ($query)
-                use ($search) {
+        $users = (array) $request->users;
+
+        $statuses = ProjectStatus::with([
+            'groupTasks' => function ($query) use ($search, $users) {
+                $query->when($search, function ($query) use ($search) {
                     $query->where('name', 'LIKE', "%$search%")
                         ->orWhere('description', 'LIKE', "%$search%");
-                }
-            );
-        }, 'groupTasks.users'])->where('project_id', $request->id)
-            ->orderBy('id', 'ASC')->get();
+                });
+
+                $query->when(count($users), function ($query) use ($users) {
+                    $query->whereHas('users', function ($q) use ($users) {
+                        $q->whereIn('user_id', $users);
+                    });
+                });
+            },
+            'groupTasks.users'
+        ])
+            ->where('project_id', $request->id)
+            ->orderBy('id', 'ASC')
+            ->get();
         return response()->json($statuses);
     }
 

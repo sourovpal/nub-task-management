@@ -5,11 +5,18 @@ import { storeToRefs } from "pinia";
 import { usePush } from "@routers";
 import { onMounted, ref } from "vue";
 import EditProjectModal from "../components/EditProjectModal.vue";
+import Http from "@services/clients";
+import toast from "vue3-hot-toast";
 
 const { headers, projectsData } = storeToRefs(projectStore);
 
 function handleDelete({ item }) {
-  console.log("Delete clicked", item.row);
+  Http.delete("/projects")
+    .then(() => {})
+    .catch(({ message }) => {
+      toast.error(message);
+      toast.error(message);
+    });
 }
 
 const toggle_edit_modal = ref(false);

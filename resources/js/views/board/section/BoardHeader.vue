@@ -14,11 +14,11 @@ const menuItems = [
       is_open.value = true;
     },
   },
-  {
-    label: "Edit",
-    icon: "pi pi-fw pi-pencil",
-    command: (e) => {},
-  },
+  // {
+  //   label: "Edit",
+  //   icon: "pi pi-fw pi-pencil",
+  //   command: (e) => {},
+  // },
   {
     label: "Delete",
     icon: "pi pi-fw pi-trash",

@@ -79,8 +79,10 @@ class ProjectController extends BaseController
             'phone' => 'required|string',
         ]);
 
+        $attributes = $request->only(['title', 'description', 'name', 'email', 'phone', 'start_date', 'due_date']);
+
         $project = Project::findOrFail($id);
-        $project->update($request->all());
+        $project->update($attributes);
 
         return response()->json([
             'message' => 'Project updated successfully.',
@@ -100,5 +102,14 @@ class ProjectController extends BaseController
     {
         $project = Project::findOrFail($id);
         return view('projects.show', compact('project'));
+    }
+
+
+    public function delete(Request $request)
+    {
+        Project::find($request->id)->delete();
+        return response()->json([
+            'message' => 'Project deleted successfully.',
+        ], Response::HTTP_OK);
     }
 }
