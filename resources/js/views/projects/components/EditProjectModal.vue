@@ -56,7 +56,7 @@ onMounted(() => {
         <div
           class="col-span-4 font-semibold text-lg dark:text-gray-200 flex flex-row items-center justify-between"
         >
-          <span> Add New </span>
+          <span> Edit & Update </span>
         </div>
       </div>
     </template>
@@ -88,46 +88,34 @@ onMounted(() => {
         </div>
       </div>
       <div class="col-span-5 px-4">
-        <div class="grid grid-cols-2 gap-x-4 mb-3">
+        <div class="grid grid-cols-2 gap-4">
           <div class="col-span-2">
-            <form-label>Assignee & Communication</form-label>
-          </div>
-          <div class="col-span-2 mt-1 flex flex-row items-center">
-            <AvatarGroup>
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-                shape="circle"
-              />
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
-                shape="circle"
-              />
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
-                shape="circle"
-              />
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
-                shape="circle"
-              />
-              <Avatar
-                image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
-                shape="circle"
-              />
-              <Avatar label="+2" shape="circle" />
-            </AvatarGroup>
-            <Button
-              icon="pi pi-plus"
-              label="Add Member"
-              severity="secondary"
-              variant="outlined"
-              size="small"
-              class="ml-4"
+            <form-input
+              label="Customer Name"
+              error-name="name"
+              type="text"
+              v-model="attributes['name']"
+              :errors="validationErrors"
             />
           </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2">
+            <form-input
+              label="Customer Email"
+              error-name="email"
+              type="text"
+              v-model="attributes['email']"
+              :errors="validationErrors"
+            />
+          </div>
+          <div class="col-span-2">
+            <form-input
+              label="Customer Phone"
+              error-name="phone"
+              type="text"
+              v-model="attributes['phone']"
+              :errors="validationErrors"
+            />
+          </div>
           <div class="col-span-2">
             <form-input
               label="Start Date"
@@ -148,7 +136,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="flex flex-row justify-between mt-6">
+        <div class="flex flex-row justify-between mt-6 mb-4">
           <Button icon="pi pi-refresh" severity="danger" label="Reset" />
           <Button
             icon="pi pi-save"

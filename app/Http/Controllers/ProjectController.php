@@ -19,13 +19,17 @@ class ProjectController extends BaseController
 
         $search = $request->input('search', null);
 
-        $projects = Project::orderBy('id', 'DESC')
+        $projects = Project::with('user')
+            ->orderBy('id', 'DESC')
             ->when(
                 $search,
                 function ($query)
                 use ($search) {
                     $query->where('title', 'LIKE', "%$search%")
-                        ->orWhere('description', 'LIKE', "%$search%");
+                        ->orWhere('description', 'LIKE', "%$search%")
+                        ->orWhere('name', 'LIKE', "%$search%")
+                        ->orWhere('phone', 'LIKE', "%$search%")
+                        ->orWhere('email', 'LIKE', "%$search%");
                 }
             )
             ->paginate($limit);
@@ -47,9 +51,17 @@ class ProjectController extends BaseController
             'description' => 'nullable|string',
             'start_date' => 'required|date',
             'due_date' => 'required|date',
+            'name' => 'required|string',
+            'email' => 'required|string',
+            'phone' => 'required|string',
         ]);
 
-        Project::create($request->only(['title', 'description', 'start_date', 'due_date']));
+        $attributes = array_merge(
+            $request->only(['title', 'description', 'name', 'email', 'phone', 'start_date', 'due_date']),
+            ['user_id' => $this->user->id]
+        );
+
+        Project::create($attributes);
 
         return response()->json([
             'message' => 'Project created successfully.',
@@ -62,6 +74,9 @@ class ProjectController extends BaseController
             'description' => 'nullable|string',
             'start_date' => 'required|date',
             'due_date' => 'required|date',
+            'name' => 'required|string',
+            'email' => 'required|string',
+            'phone' => 'required|string',
         ]);
 
         $project = Project::findOrFail($id);

@@ -33,6 +33,36 @@ export const useProjectStore = defineStore("project", () => {
             sorted: "title",
         },
         {
+            unique_id: "name",
+            label: "name",
+            style: {
+                width: "6rem",
+            },
+            item(row) {
+                return row.name;
+            },
+            sorted: "name",
+        },
+        {
+            unique_id: "contact",
+            label: "Contact",
+            style: {
+                width: "8rem",
+            },
+            item(row) {
+                return row.name;
+            },
+            sorted: "email",
+        },
+        {
+            unique_id: "creator",
+            label: "Creator",
+            style: {
+                width: "12rem",
+                "max-width": "12rem",
+            },
+        },
+        {
             unique_id: "start-date",
             label: "Start Date",
             style: {
@@ -52,25 +82,6 @@ export const useProjectStore = defineStore("project", () => {
             },
             item(row) {
                 return dateTimeFormate(row.due_date, "YYYY-MM-DD");
-            },
-        },
-        {
-            unique_id: "assignee",
-            label: "Assignee",
-            style: {
-                width: "20rem",
-                "max-width": "20rem",
-            },
-        },
-        {
-            unique_id: "created-date",
-            label: "Created Date",
-            style: {
-                width: "10rem",
-                "max-width": "10rem",
-            },
-            item(row) {
-                return dateTimeFormate(row.created_at, "YYYY-MM-DD");
             },
         },
         {

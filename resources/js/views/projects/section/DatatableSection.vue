@@ -61,30 +61,26 @@ onMounted(() => projectStore.handleFetchProjects());
     <template #td-checkbox>
       <form-checkbox />
     </template>
-    <template #td-assignee>
-      <AvatarGroup>
+    <template #td-creator="{ row }">
+      <div class="flex gap-x-3 items-center">
         <Avatar
           image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
           shape="circle"
         />
-        <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
-          shape="circle"
-        />
-        <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
-          shape="circle"
-        />
-        <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/ionibowcher.png"
-          shape="circle"
-        />
-        <Avatar
-          image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png"
-          shape="circle"
-        />
-        <Avatar label="+2" shape="circle" />
-      </AvatarGroup>
+        {{ row?.user?.first_name }} {{ row?.user?.last_name }}
+      </div>
+    </template>
+    <template #td-contact="{ row }">
+      <div>
+        <span class="block">Email: {{ row.email }}</span>
+        <span class="block">Phone: {{ row.phone }}</span>
+      </div>
+    </template>
+    <template #td-assignee>
+      <Avatar
+        image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+        shape="circle"
+      />
     </template>
     <template #td-action="{ row }">
       <action-menu :items="menuItems(row)" />

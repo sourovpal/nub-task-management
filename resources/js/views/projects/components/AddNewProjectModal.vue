@@ -82,6 +82,33 @@ function handleProjectCreate() {
                 <div class="grid grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <form-input
+                            label="Customer Name"
+                            error-name="name"
+                            type="text"
+                            v-model="attributes['name']"
+                            :errors="validationErrors"
+                        />
+                    </div>
+                    <div class="col-span-2">
+                        <form-input
+                            label="Customer Email"
+                            error-name="email"
+                            type="text"
+                            v-model="attributes['email']"
+                            :errors="validationErrors"
+                        />
+                    </div>
+                    <div class="col-span-2">
+                        <form-input
+                            label="Customer Phone"
+                            error-name="phone"
+                            type="text"
+                            v-model="attributes['phone']"
+                            :errors="validationErrors"
+                        />
+                    </div>
+                    <div class="col-span-2">
+                        <form-input
                             label="Start Date"
                             error-name="start_date"
                             type="date"
@@ -100,7 +127,7 @@ function handleProjectCreate() {
                     </div>
                 </div>
 
-                <div class="flex flex-row justify-between mt-6">
+                <div class="flex flex-row justify-between mt-6 pb-4">
                     <Button
                         icon="pi pi-refresh"
                         severity="danger"

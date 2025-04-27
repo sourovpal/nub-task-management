@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->string('description')->nullable();
             $table->string('name')->nullable();
@@ -30,6 +31,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('task_commants');
+        Schema::dropIfExists('quotations');
+        Schema::dropIfExists('task_users');
+        Schema::dropIfExists('project_tasks');
+        Schema::dropIfExists('project_statuses');
         Schema::dropIfExists('projects');
     }
 };

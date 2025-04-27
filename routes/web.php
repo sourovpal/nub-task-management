@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 Route::get('projects/{id}/print', function (Request $request) {
     $project = Project::find($request->id);
     $quotations = Quotation::where('project_id', $request->id)->get();
+    // return view('quotation', compact('quotations', 'project'));
     $pdf = Pdf::loadView('quotation', compact('quotations', 'project'))->setPaper('a4', 'portrait');;
     return $pdf->stream('quotation.pdf');
 });
