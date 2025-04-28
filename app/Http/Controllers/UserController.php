@@ -91,7 +91,7 @@ class UserController extends BaseController
             $attributes,
             [
                 'department_id' => $request->department,
-                'password' => Hash::make($request->password)
+                // 'password' => Hash::make($request->password)
             ]
         );
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProjectTask;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ProjectTaskController extends Controller
 {
@@ -173,5 +174,14 @@ class ProjectTaskController extends Controller
     {
         $tasks = ProjectTask::where('id', $request->id)->first();
         $tasks->users()->sync((array)$request->users);
+
+        $message = "New Task Assignment: $tasks->name";
+
+        foreach ($tasks->users as $user) {
+            if ($user->phone_number) {
+                $phone = str_replace('+', '', $user->phone_number);
+                Http::get("https://bulksmsbd.net/api/smsapi?api_key=ppfcvYlBPYiqLkDnCGzB&type=text&number=$phone&senderid=8809617625543&message=$message");
+            }
+        }
     }
 }

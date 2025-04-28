@@ -22,6 +22,7 @@ const attributes = reactive({
   first_name: "",
   last_name: "",
   email: "",
+  phone_number: "",
   password: "",
   department: null,
   join_date: null,
@@ -109,11 +110,11 @@ onMounted(() => {
       <form-label>Phone:</form-label>
 
       <form-input
-        v-model="attributes.phone"
+        v-model="attributes.phone_number"
         class="w-full"
         autocomplete="off"
         :errors="validationErrors"
-        error-name="phone"
+        error-name="phone_number"
       />
     </div>
 
