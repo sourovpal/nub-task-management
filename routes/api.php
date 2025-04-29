@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashoboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\KanbanController;
 use App\Http\Controllers\ProjectController;
@@ -9,8 +10,8 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TaskCommantController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,12 @@ Route::prefix('v1')->group(function () {
 
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('/dashboard')
+        ->controller(DashoboardController::class)
+        ->group(function () {
+            Route::get('/', 'index');
+        });
 
     Route::prefix('/users')
         ->controller(UserController::class)

@@ -13,5 +13,4 @@ export default {
     project,
     kanban,
     quotation,
-    error: Client.error,
 };
