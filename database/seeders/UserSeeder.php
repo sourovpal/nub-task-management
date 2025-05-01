@@ -27,5 +27,38 @@ class UserSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'department_id' => $department->id,
         ]);
+
+        User::create([
+            'first_name' => 'Sourov',
+            'last_name' => 'Pal',
+            'email' => 'sourov@gmail.com',
+            'phone_number' => '+8801822022892',
+            'password' => bcrypt('12345678'),
+            'department_id' => $department->id,
+        ]);
+
+        User::create([
+            'first_name' => 'Rejaul',
+            'last_name' => 'Islam',
+            'email' => 'rejaul@gmail.com',
+            'password' => bcrypt('12345678'),
+            'department_id' => $department->id,
+        ]);
+
+        User::create([
+            'first_name' => 'Ashikur',
+            'last_name' => 'Rahman',
+            'email' => 'ashikur@gmail.com',
+            'password' => bcrypt('12345678'),
+            'department_id' => $department->id,
+        ]);
+
+        User::create([
+            'first_name' => 'Shanta',
+            'last_name' => 'Akter',
+            'email' => 'shanta@gmail.com',
+            'password' => bcrypt('12345678'),
+            'department_id' => $department->id,
+        ]);
     }
 }

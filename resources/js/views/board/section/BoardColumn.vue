@@ -91,7 +91,7 @@ function getChildPayload(index, stage) {
           <Draggable
             @drag="() => console.log('click', $event)"
             v-for="(task, index) in stage['group_tasks']"
-            :key="index"
+            :key="Math.random() * index"
           >
             <TaskCard :task="task" :stage="stage" />
           </Draggable>

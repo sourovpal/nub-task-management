@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 const validationErrors = ref({});
 import Http from "@services";
 import toast from "vue3-hot-toast";
@@ -26,6 +26,14 @@ const { projectStages } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 
+const taskTriger = computed(() => props.task);
+
+watch(taskTriger, (newVal) => {
+  if (newVal) {
+    attributes.value = { ...newVal };
+  }
+});
+
 function handleTaskCreate() {
   isLoading.value = true;
   Http.project[props.task ? "updateTask" : "createTask"](attributes.value, {
@@ -48,7 +56,9 @@ function handleUpdateTaskUser(users) {
   const ids = users.map((item) => item.id);
   Http.project
     .taskUserUpdate({ users: ids, id: props.task.id })
-    .then(({ message }) => {})
+    .then((res) => {
+      projectStore.handleFetchStage();
+    })
     .catch(({ errors }) => {})
     .finally(() => {});
 }
@@ -104,6 +114,29 @@ onMounted(() => {
               [{ list: 'ordered' }, { list: 'bullet' }],
             ]"
           />
+        </div>
+        <div v-if="attributes.users?.length">
+          <form-label>Assign Work</form-label>
+          <div
+            v-for="(member, index) in attributes.users"
+            :key="member.id"
+            class="grid grid-col-6"
+          >
+            <div class="flex flex-row items-center gap-x-2 mb-3">
+              <Avatar
+                :key="index"
+                :image="`https://avatar.iran.liara.run/public/boy?refresh=${member.id}`"
+                shape="circle"
+              />
+              {{ member.first_name }} {{ member.last_name }}
+            </div>
+            <div class="">
+              <form-textarea
+                v-model="member['pivot']['work']"
+                placeholder="Assign work..."
+              ></form-textarea>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-span-5 px-4">

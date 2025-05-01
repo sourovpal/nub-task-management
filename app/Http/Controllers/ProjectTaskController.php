@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProjectTask;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -56,7 +57,13 @@ class ProjectTaskController extends Controller
             'due_date' => 'nullable',
         ]);
 
-        $task = ProjectTask::where('id', $id)->update($payload);
+        $task = ProjectTask::find($id);
+
+        $task->update($payload);
+
+        foreach ($request->users as $user) {
+            $task->users()->updateExistingPivot($user['id'], $user['pivot']);
+        }
 
         return response()->json([
             'message' => 'Task updated successfully',
@@ -177,11 +184,16 @@ class ProjectTaskController extends Controller
 
         $message = "New Task Assignment: $tasks->name";
 
-        foreach ($tasks->users as $user) {
-            if ($user->phone_number) {
-                $phone = str_replace('+', '', $user->phone_number);
-                Http::get("https://bulksmsbd.net/api/smsapi?api_key=ppfcvYlBPYiqLkDnCGzB&type=text&number=$phone&senderid=8809617625543&message=$message");
+        try {
+            foreach ($tasks->users as $user) {
+                if ($user->phone_number) {
+                    $phone = str_replace('+', '', $user->phone_number);
+                    Http::get("https://bulksmsbd.net/api/smsapi?api_key=ppfcvYlBPYiqLkDnCGzB&type=text&number=$phone&senderid=8809617625543&message=$message");
+                }
             }
+        } catch (Exception $error) {
         }
+
+        return response()->json($tasks->users);
     }
 }

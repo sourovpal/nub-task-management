@@ -21,7 +21,7 @@ class ProjectTask extends Model
             'user_id',
             'id',
             'id',
-        );
+        )->withPivot('work');
     }
 
     public function status()
